@@ -4,7 +4,7 @@ from Python.Utils.Serial import SerialHandler
 from pprint import pprint
 
 print("Hello World!")
-pprint(Packet().__dir__())
+pprint(dir(Packet()))
 
 with SerialHandler() as serial:
     print("Doot")
