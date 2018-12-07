@@ -6,6 +6,7 @@ class SerialHandler:
     """
     A class for communicating via a serial connection.
     Uses even parity and UTF-8 as the string encoding.
+    Can be used as a context in a context manager (the 'with' statement)
     """
     def __init__(self, baud_rate=9600, port="COM1"):
         self.serial_stream = Serial()
