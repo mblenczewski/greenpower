@@ -1,4 +1,4 @@
-from Python.Utils.Packet import Packet, PacketBuilder
+from Python.Utils.Packet import *
 from serial import *
 
 
@@ -19,6 +19,10 @@ class SerialHandler:
         self.serial_stream.parity = PARITY_EVEN
         self.serial_stream.rtscts = 1
 
+    def open(self):
+        """ Opens the serial stream to use. """
+        self.serial_stream.open()
+
     def write(self, packet: Packet):
         """ Writes the given packet to the serial stream in a binary format. """
         serialised_packet: bytes = str.encode(PacketBuilder.serialise_packet(packet))
@@ -26,7 +30,7 @@ class SerialHandler:
 
     def read(self) -> Packet:
         """ Receives a packet from the serial stream, deserialises it and returns it. """
-        serialised_packet: str = self.serial_stream.read_until(PacketBuilder.terminator).decode()
+        serialised_packet: str = self.serial_stream.read_until(PACKET_END).decode()
         return PacketBuilder.deserialise_packet(serialised_packet)
 
     def __enter__(self):
