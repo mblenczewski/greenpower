@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict
 from datetime import datetime
 
 PACKET_ATTRIBUTE_SEPARATOR = ":"
