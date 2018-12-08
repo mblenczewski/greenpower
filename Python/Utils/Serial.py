@@ -25,13 +25,13 @@ class SerialHandler:
 
     def write(self, packet: Packet):
         """ Writes the given packet to the serial stream in a binary format. """
-        serialised_packet: bytes = str.encode(PacketBuilder.serialise_packet(packet))
+        serialised_packet: bytes = str.encode(PacketBuilder.serialise_packet_string(packet))
         self.serial_stream.write(serialised_packet)
 
     def read(self) -> Packet:
         """ Receives a packet from the serial stream, deserialises it and returns it. """
         serialised_packet: str = self.serial_stream.read_until(PACKET_END).decode()
-        return PacketBuilder.deserialise_packet(serialised_packet)
+        return PacketBuilder.deserialise_packet_string(serialised_packet)
 
     def __enter__(self):
         """ Allows for entering a context with this class. """

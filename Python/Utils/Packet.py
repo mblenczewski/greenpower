@@ -75,12 +75,17 @@ class PacketBuilder:
     """
 
     @staticmethod
-    def serialise_packet(packet: Packet) -> str:
+    def serialise_packet_string(packet: Packet) -> str:
         """ Serialises and returns the string representation of the given data packet. """
         return str(packet)
 
     @staticmethod
-    def deserialise_packet(packet: str) -> Packet:
+    def serialise_packet_bytes(packet: Packet) -> bytes:
+        """ Serialises and returns the byte representation of the given data packet. """
+        return str(packet).encode()
+
+    @staticmethod
+    def deserialise_packet_string(packet: str) -> Packet:
         """ Deserialises and returns a packet from the given string. """
         if packet.find(PACKET_END) != -1:
             data_packet: Packet = Packet()  # final packet to return
@@ -100,3 +105,9 @@ class PacketBuilder:
             return data_packet
         else:
             raise ValueError("Malformed packet given, lacking end delimiter. Packet given: '{}'".format(packet))
+
+    @staticmethod
+    def deserialise_packet_bytes(packet_b: bytes) -> Packet:
+        """ Deserialises and returns a packet from the given bytes. """
+        packet: str = packet_b.decode()  # converts to string representation using default utf-8 encoding
+        return PacketBuilder.deserialise_packet_string(packet)  # code reuse

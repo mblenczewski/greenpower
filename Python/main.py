@@ -7,8 +7,8 @@ print("Hello World!")
 pprint(dir(Packet()))
 
 with SerialHandler() as serial:
-    print(PacketBuilder.serialise_packet(Packet()))
-    print(PacketBuilder.deserialise_packet(str(Packet())))
+    print(PacketBuilder.serialise_packet_string(Packet()))
+    print(PacketBuilder.deserialise_packet_string(str(Packet())))
     # serial.open()
     # serial.write(Packet())
 
