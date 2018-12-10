@@ -64,6 +64,7 @@ class Window(QMainWindow):
         else:
             event.ignore()
 
+
 def run_app():
     _ = App()
 
