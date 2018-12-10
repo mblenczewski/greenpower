@@ -1,5 +1,6 @@
 from Python.Utils.Packet import Packet, PacketBuilder
 from Python.Utils.Serial import SerialHandler
+from Python.GUI.Views import MonitorApp
 
 
 print("Hello World!")
@@ -15,4 +16,5 @@ with SerialHandler() as serial:
     # serial.open()
     # serial.write(Packet())
 
+_ = MonitorApp()
 print("Goodbye World!")
