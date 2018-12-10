@@ -17,4 +17,3 @@ with SerialHandler() as serial:
     # serial.write(Packet())
 
 _ = MonitorApp()
-print("Goodbye World!")
