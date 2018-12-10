@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="695505af-444f-46d9-85f7-aad34c3adde0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Python/GUI/Views.py" afterDir="false" />
+<change afterPath="$PROJECT_DIR$/Python/GUI/Views.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Python/Icon.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Python/Utils/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/Utils/GUI.py" afterDir="false" />
@@ -34,12 +34,15 @@
     <expand />
     <select />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="greenpower" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Python/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
+<state relative-caret-position="306">
               <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
               <folding>
                 <element signature="e#0#53#0" expanded="true" />
@@ -85,7 +88,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Python/Utils/Serial.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
+<state relative-caret-position="374">
               <caret line="22" column="44" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
@@ -97,7 +100,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Python/Utils/Packet.py">
           <provider selected="true" editor-type-id="text-editor">
-              <state relative-caret-position="1700">
+<state relative-caret-position="1700">
               <caret line="101" selection-start-line="101" selection-end-line="101" />
             </state>
           </provider>
@@ -145,13 +148,46 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="GUI" />
+<entry key="$PROJECT_DIR$" value="GUI" />
       </map>
     </option>
     <option name="SIGN_OFF_COMMIT" value="true" />
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/GUI" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="master" />
+              </list>
+            </value>
+          </entry>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/master" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
   </component>
   <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="ac059d0c-c12f-4fe8-af73-fa111eba1d1c" />
+    <option name="defaultAccountId" value="57e894b3-dab4-466f-9859-6a2a61b48229" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -167,7 +203,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
+<option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1087" />
   </component>
@@ -179,6 +215,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -218,7 +255,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -230,7 +266,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="G:\Toolbox App Projects\PyCharm\greenpower\Python" />
+<recent name="G:\Toolbox App Projects\PyCharm\greenpower\Python" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -303,7 +339,7 @@
       <updated>1544207003271</updated>
       <workItem from="1544207004571" duration="10226000" />
       <workItem from="1544257780918" duration="3640000" />
-      <workItem from="1544444248342" duration="6645000" />
+<workItem from="1544444248342" duration="6645000" />
     </task>
     <task id="LOCAL-00001" summary="Added initial commit">
       <created>1544207498440</created>
@@ -407,13 +443,15 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4989339" weight="0.32936078" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info active="true" anchor="bottom" id="Version Control" order="8" sideWeight="0.4936034" visible="true" weight="0.16303219" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5063966" side_tool="true" visible="true" weight="0.16303219" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="right" id="R Graphics" />
+      <window_info anchor="right" id="R Packages" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -425,7 +463,7 @@
     <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="RECENT_FILTERS">
+<option name="RECENT_FILTERS">
       <map>
         <entry key="Branch">
           <value>
@@ -456,7 +494,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="Added empty GUI util" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Python/Utils/Serial.py">
+<entry file="file://$PROJECT_DIR$/Python/Utils/Serial.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="22" column="44" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
