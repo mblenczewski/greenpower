@@ -5,6 +5,9 @@ import sys
 
 
 class MonitorApp(App):
+    """
+    A class for the monitoring app
+    """
     def show_window(self):
         _ = MainView()
         sys.exit(self.exec_())
