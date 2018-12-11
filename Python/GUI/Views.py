@@ -156,7 +156,6 @@ class BatteryCurrentPlot(FigureCanvas):
                  dpi=60
                  ):
         """
-
         :param parent:
             The parent widget of the plot_data.
         :param width:
