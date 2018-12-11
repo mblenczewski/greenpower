@@ -101,9 +101,9 @@ class BatteryView(Window):
     def init_ui(self):
         plot = BatteryCurrentPlot(self)
         plot.move(0, 0)
-        self.data_points = [(random.random(), datetime.now()) for _ in range(7200)]
+        self.data_points = [(random.random(), datetime.now()) for _ in range(25)]
         # plot.plot_data(points)
-        plot.plot_data(self.data_points, "b-", 0.5, 5)
+        plot.plot_data(self.data_points, "b-", 0.5, 1)
 
     def add_point(self, point: (int, datetime)):
         """ Adds a point to the battery graph. """
@@ -150,8 +150,6 @@ class BatteryCurrentPlot(FigureCanvas):
 
     def __init__(self,
                  parent=None,
-                 max_current: int = 100,
-                 min_current: int = -100,
                  width: int = 32, height: int = 18,
                  subplot_rows: int = 1,
                  subplot_columns: int = 1,
@@ -161,10 +159,6 @@ class BatteryCurrentPlot(FigureCanvas):
 
         :param parent:
             The parent widget of the plot_data.
-        :param max_current:
-            The max current draw the battery could experience.
-        :param min_current:
-            The max negative current draw the battery could experience.
         :param width:
             The width of the plot_data in inches.
         :param height:
