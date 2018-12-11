@@ -44,8 +44,8 @@ class PlotCanvas(FigureCanvas):
     def plot(self):
         data = [random.random() for i in range(25)]
         ax = self.figure.add_subplot(111)
-        ax.plot(data, 'r-')
-        ax.plot([0, 25], [1, 0], color='b')
+        ax.plot_data(data, 'r-')
+        ax.plot_data([0, 25], [1, 0], color='b')
         ax.set_title('Battery')
         self.draw()
 
