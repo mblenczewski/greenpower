@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Viewer.Annotations;
+using Viewer.Properties;
 
 namespace Viewer.ViewModels
 {

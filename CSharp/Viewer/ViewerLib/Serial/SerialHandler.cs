@@ -26,7 +26,10 @@ namespace ViewerLib.Serial
 
         #region Properties
 
-        public bool IsActive { get; set; }
+        public bool IsActive
+        {
+            get { return readThread != null; }
+        }
 
         #endregion Properties
 
@@ -68,7 +71,6 @@ namespace ViewerLib.Serial
                 readSerialConnection = true;
                 readThread = new Thread(Read);
                 readThread.Start();
-                IsActive = true;
             }
         }
 
@@ -79,7 +81,6 @@ namespace ViewerLib.Serial
                 readSerialConnection = false;
                 readThread.Join();
                 readThread = null;
-                IsActive = false;
                 serialPort.Close();
             }
         }

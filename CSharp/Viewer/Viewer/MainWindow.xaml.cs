@@ -30,6 +30,8 @@ namespace Viewer
             viewModel = new MainViewModel();
 
             DataContext = viewModel;
+
+            Closing += viewModel.CleanShutdown;
         }
     }
 }

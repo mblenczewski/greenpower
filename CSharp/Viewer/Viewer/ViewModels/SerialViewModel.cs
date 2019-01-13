@@ -80,6 +80,12 @@ namespace Viewer.ViewModels
 
         #region Methods
 
+        private string GetDate()
+        {
+            DateTime date = DateTime.Today;
+            return $"{date.Day}-{date.Month}-{date.Year}";
+        }
+
         public void RefreshLog(object param)
         {
             OnPropertyChanged(nameof(SerialLog));
@@ -88,13 +94,15 @@ namespace Viewer.ViewModels
         public void ExportToCsv(object param)
         {
             string fullFileName =
-                CsvDir + DateTime.Now.ToFileTime() + ".csv";
+                CsvDir + GetDate() + ".csv";
+
+            CsvFileHandler.Write(model.SerialLog.ToArray(), fullFileName);
         }
 
         public void ExportToJson(object param)
         {
             string fullFileName =
-                JsonDir + DateTime.Now.ToFileTime() + ".json";
+                JsonDir + GetDate() + ".json";
 
             JsonFileHandler.Write(model.SerialLog, fullFileName);
         }

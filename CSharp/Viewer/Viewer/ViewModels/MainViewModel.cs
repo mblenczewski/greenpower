@@ -1,4 +1,5 @@
-﻿using ViewerLib.Serial;
+﻿using System.ComponentModel;
+using ViewerLib.Serial;
 
 namespace Viewer.ViewModels
 {
@@ -62,5 +63,22 @@ namespace Viewer.ViewModels
         }
 
         #endregion Constructor
+
+        #region Methods
+
+        /// <summary>
+        /// Performs a clean shutdown, closing any used resources.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        public void CleanShutdown(object sender, CancelEventArgs args)
+        {
+            if (serialHandler.IsActive)
+            {
+                serialHandler.StopSerialReaderThread();
+            }
+        }
+
+        #endregion Methods
     }
 }

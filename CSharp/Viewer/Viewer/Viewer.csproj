@@ -95,9 +95,6 @@
     <Compile Include="Views\Controls\SerialView.xaml.cs">
       <DependentUpon>SerialView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Windows\SerialViewer.xaml.cs">
-      <DependentUpon>SerialViewer.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -127,10 +124,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\SerialView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Windows\SerialViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -173,6 +166,7 @@
     <Folder Include="Commands\Car Commands\" />
     <Folder Include="Commands\Racetrack Commands\" />
     <Folder Include="Views\Pages\" />
+    <Folder Include="Views\Windows\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
