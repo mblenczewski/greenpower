@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Viewer.Views.Controls.SerialView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Viewer.Views.Controls"
+             xmlns:viewModels="clr-namespace:Viewer.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="450">
+    <d:UserControl.DataContext>
+        <viewModels:SerialViewModel />
+    </d:UserControl.DataContext>
+    <Grid>
+        <Label Content="Serial Communication Log:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="800" />
+        <ListBox Name="SerialLogView" HorizontalAlignment="Left" Height="350" Margin="0,40,0,0" VerticalAlignment="Top" Width="800"
+                 ItemsSource="{Binding SerialLog}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Timestamp}" />
+                        <Separator Width="10" />
+                        <TextBlock Text="{Binding Data}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Content="Refresh log" Command="{Binding RefreshLogCommand}" HorizontalAlignment="Left" Margin="0,395,0,0" VerticalAlignment="Top" Width="250" />
+        <Button Content="Save to text file (CSV)" Command="{Binding ExportToCsvCommand}" HorizontalAlignment="Left" Margin="275,395,0,0" VerticalAlignment="Top" Width="250" />
+        <Button Content="Save to text file (JSON)" Command="{Binding ExportToJsonCommand}" HorizontalAlignment="Left" Margin="550,395,0,0" VerticalAlignment="Top" Width="250" />
+    </Grid>
+</UserControl>

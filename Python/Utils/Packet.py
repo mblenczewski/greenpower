@@ -87,24 +87,24 @@ class PacketBuilder:
     @staticmethod
     def deserialise_packet_string(packet: str) -> Packet:
         """ Deserialises and returns a packet from the given string. """
-        if packet.find(PACKET_END) != -1:
-            data_packet: Packet = Packet()  # final packet to return
-            packet_attributes = data_packet.__dir__()  # gets all the packet attributes
-            delimited_data: str = packet.strip(PACKET_END)  # strips the packet terminator from the packet
-
-            for serialised_attribute in delimited_data.split(PACKET_ATTRIBUTE_DELIMITER):  # splits packet to attributes
-                if serialised_attribute is "":  # skips empty attributes
-                    continue
-
-                attribute_name: str = serialised_attribute.split(PACKET_ATTRIBUTE_SEPARATOR)[0]  # gets attribute names
-                attribute_type: type = packet_attributes[attribute_name]  # gets the type of the attribute
-                attribute_value = serialised_attribute.split(PACKET_ATTRIBUTE_SEPARATOR)[1]  # gets attr values
-
-                data_packet.__setattr__(attribute_name, TYPES[attribute_type](attribute_value))
-
-            return data_packet
-        else:
+        if packet.find(PACKET_END) == -1:
             raise ValueError("Malformed packet given, lacking end delimiter. Packet given: '{}'".format(packet))
+
+        data_packet: Packet = Packet()  # final packet to return
+        packet_attributes = data_packet.__dir__()  # gets all the packet attributes
+        delimited_data: str = packet.strip(PACKET_END)  # strips the packet terminator from the packet
+
+        for serialised_attribute in delimited_data.split(PACKET_ATTRIBUTE_DELIMITER):  # splits packet to attributes
+            if serialised_attribute is "":  # skips empty attributes
+                continue
+
+            attribute_name: str = serialised_attribute.split(PACKET_ATTRIBUTE_SEPARATOR)[0]  # gets attribute names
+            attribute_type: type = packet_attributes[attribute_name]  # gets the type of the attribute
+            attribute_value = serialised_attribute.split(PACKET_ATTRIBUTE_SEPARATOR)[1]  # gets attr values
+
+            data_packet.__setattr__(attribute_name, TYPES[attribute_type](attribute_value))
+
+        return data_packet
 
     @staticmethod
     def deserialise_packet_bytes(packet_b: bytes) -> Packet:

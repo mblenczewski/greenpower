@@ -1,0 +1,36 @@
+﻿<Window x:Class="Viewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Viewer"
+        xmlns:views="clr-namespace:Viewer.Views.Controls"
+        xmlns:viewModels="clr-namespace:Viewer.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="520" Width="830">
+    <d:UserControl.DataContext>
+        <viewModels:MainViewModel />
+    </d:UserControl.DataContext>
+    <TabControl>
+        <TabItem Header="Index">
+            <views:IndexView Background="#FFE5E5E5" DataContext="{Binding IndexView}">
+            </views:IndexView>
+        </TabItem>
+        <TabItem Header="Serial View">
+            <views:SerialView Background="#FFE5E5E5" DataContext="{Binding SerialView}">
+            </views:SerialView>
+        </TabItem>
+        <TabItem Header="Car View">
+            <views:CarView Background="#FFE5E5E5" DataContext="{Binding CarView}">
+            </views:CarView>
+        </TabItem>
+        <TabItem Header="Battery View">
+            <views:BatteryView Background="#FFE5E5E5" DataContext="{Binding BatteryView}">
+            </views:BatteryView>
+        </TabItem>
+        <TabItem Header="Racetrack View">
+            <views:RacetrackView Background="#FFE5E5E5" DataContext="{Binding RacetrackView}">
+            </views:RacetrackView>
+        </TabItem>
+    </TabControl>
+</Window>
