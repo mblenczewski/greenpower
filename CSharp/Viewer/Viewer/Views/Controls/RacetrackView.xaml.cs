@@ -12,24 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Viewer.ViewModels;
 
-namespace Viewer
+namespace Viewer.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for RacetrackView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class RacetrackView : UserControl
     {
-        private MainViewModel viewModel;
-
-        public MainWindow()
+        public RacetrackView()
         {
             InitializeComponent();
-
-            viewModel = new MainViewModel();
-
-            DataContext = viewModel;
         }
     }
 }

@@ -10,26 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Viewer.ViewModels;
 
-namespace Viewer
+namespace Viewer.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SerialViewer.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SerialViewer : Window
     {
-        private MainViewModel viewModel;
-
-        public MainWindow()
+        public SerialViewer()
         {
             InitializeComponent();
-
-            viewModel = new MainViewModel();
-
-            DataContext = viewModel;
         }
     }
 }
