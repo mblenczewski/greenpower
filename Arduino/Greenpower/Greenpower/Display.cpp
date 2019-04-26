@@ -83,3 +83,19 @@ void lcd_debug() {
 		identifier = 0x9486;
 	}
 }
+
+uint16_t get_lcd_id()
+{
+	return tft.readID();
+}
+
+void setup_tft()
+{
+	tft.reset();
+	identifier = tft.readID();
+	lcd_debug();
+	tft.begin(identifier);
+
+	tft.fillScreen(BLACK);
+	tft.setCursor(0, 0);
+}

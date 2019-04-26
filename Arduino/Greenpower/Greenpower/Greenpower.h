@@ -9,16 +9,25 @@
 #include "WProgram.h"
 #endif
 
-#endif
-
 // Stores all the possible components and their respective pins (that they affect).
-enum class Pins : uint8_t
+enum class Pins : byte
 {
+	// The ammeter; on analog pin 0.
 	Ammeter = A0,
+
+	// The voltmeter; on analog pin 1.
 	Voltmeter = A1,
+
+	// The throttle; on analog pin 2.
 	Throttle = A2,
+
+	// The RF module; on pin 1.
 	Radio = 1,
+
+	// The speed controller; on pin 2.
 	SpeedController = 2,
+
+	// The tachometer; on pin 22.
 	Tachometer = 22,
 
 	// The button that needs to be pressed to increment a variable by 1.
@@ -32,3 +41,4 @@ enum class Pins : uint8_t
 	ButtonRaceMode = 27,
 	ButtonOvertakeMode = 28,
 };
+#endif

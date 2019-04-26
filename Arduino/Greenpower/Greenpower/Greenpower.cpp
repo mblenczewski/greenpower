@@ -3,9 +3,8 @@
 //
 
 #include "Greenpower.h"
-#include "Display.h"
 
-int _loop(void) {
+int _loop() {
 	/*
 	tft.fillScreen(BLACK);
 	tft.setCursor(0, 0);
@@ -27,6 +26,8 @@ int main()
 {
 	init();
 	Serial.begin(9600);
+
+	/*
 	Serial.println(F("TFT LCD test"));
 
 	tft.reset();
@@ -36,6 +37,7 @@ int main()
 
 	tft.fillScreen(BLACK);
 	tft.setCursor(0, 0);
+	*/
 
 	while (true)
 	{

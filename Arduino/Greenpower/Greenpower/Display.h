@@ -9,17 +9,6 @@
 #include "WProgram.h"
 #endif
 
-#endif
-
-#include <gfxfont.h>
-#include <Adafruit_SPITFT_Macros.h>
-#include <Adafruit_SPITFT.h>
-#include <Adafruit_GFX.h>
-#include <UTFTGLUE.h>
-#include <TFT_HX8357GLUE.h>
-#include <mcufriend_special.h>
-#include <mcufriend_shield.h>
-#include <mcufriend_serial.h>
 #include <MCUFRIEND_kbv.h>
 
 // wiring with UNO or Mega2560:
@@ -77,3 +66,9 @@ char message[] = "Groop\nI implore thee,\nmy foonting turlingdromes.\nAnd hoopti
 
 // Logs debug information about the connected LCD screen to the serial connection.
 void lcd_debug();
+
+uint16_t get_lcd_id();
+
+void setup_tft();
+
+#endif
