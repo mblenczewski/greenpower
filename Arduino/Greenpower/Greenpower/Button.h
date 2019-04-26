@@ -18,7 +18,7 @@ class Button
 {
 private:
 	// The buttons target, represented as the pin that the button needs to check.
-	byte pin_to_check;
+	uint8_t pin_to_check;
 
 	// Reference to the variable that will be incremented or decremented on a button press.
 	int* target_var_p;
@@ -33,7 +33,7 @@ public:
 	// Initialises a new instance of the 'Button' class.
 	// Takes a pointer to a variable that will be incremented when the button is pressed, and a value by which to increment said variable.
 	// Also takes a 'uint8_t', which holds the pin that should be checked to see whether the physical button is pressed.
-	Button(int* target_variable_pointer, int change_increment, byte target_pin);
+	Button(int* target_variable_pointer, int change_increment, uint8_t target_pin);
 
 	// Initialises a new instance of the 'Button' class.
 	// Takes a pointer to a variable that will be incremented when the button is pressed, and a value by which to increment said variable.

@@ -13,7 +13,7 @@ Button::Button(int* target_variable_pointer, int change_increment, uint8_t targe
 	is_pressed = digitalRead(pin_to_check) == HIGH;
 }
 
-Button::Button(int* target_variable_pointer, int change_increment, ::Pins target_pin)
+Button::Button(int* target_variable_pointer, int change_increment, Pins target_pin)
 {
 	pin_to_check = static_cast<uint8_t>(target_pin);
 	target_var_p = target_variable_pointer;

@@ -4,6 +4,10 @@
 
 #include "Display.h"
 
+#include <Adafruit_SPITFT.h>
+#include <Adafruit_GFX.h>
+#include <MCUFRIEND_kbv.h>
+
 void lcd_debug() {
 	if (identifier == 0x9325)
 	{
