@@ -9,7 +9,13 @@
 #include "WProgram.h"
 #endif
 
-// Stores all the possible components and their respective pins (which they affect).
+// Internal loop function, that will be repeated until the Arduino is reset.
+int _loop();
+
+// Main function that will be executed when the Arduino receives power.
+int main();
+
+// Stores all the possible components and their respective pins (the pins they affect and read).
 enum class Pins : uint8_t
 {
 	// The ammeter; on analog pin 0.
@@ -48,5 +54,28 @@ enum class Pins : uint8_t
 	// The button that needs to be pressed to toggle 'Overtake Mode'.
 	ButtonOvertakeMode = 28,
 };
+
+// Returns the uin8_t equivalent of the given pin.
+inline uint8_t get_pin(Pins pin_name)
+{
+	return static_cast<uint8_t>(pin_name);
+}
+
+// Sets up the pin IO modes of all defined modules (see 'Pins' enum).
+void setup_pin_modes();
+
+// The amount of seconds per race.
+constexpr int RACE_TIME = 36000;
+
+// Total amount of power in the battery when fully charged (P=IV).
+constexpr int BATTERY_CAPACITY = 3400;
+
+// The minimum reading for the throttle controlling pin.
+constexpr int THROTTLE_MIN = 0;
+
+// The maximum reading for the throttle controlling pin.
+constexpr  int THROTTLE_MAX = 1023;
+
+constexpr int SPEED_CONTROLLER_MAX = 255;
 
 #endif

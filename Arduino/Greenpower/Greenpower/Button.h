@@ -30,12 +30,12 @@ private:
 	bool is_pressed;
 
 public:
-	// Initialises a new instance of the 'Button' class.
+	// Initialises a new instance of the Button class.
 	// Takes a pointer to a variable that will be incremented when the button is pressed, and a value by which to increment said variable.
 	// Also takes a 'uint8_t', which holds the pin that should be checked to see whether the physical button is pressed.
 	Button(int* target_variable_pointer, int change_increment, uint8_t target_pin);
 
-	// Initialises a new instance of the 'Button' class.
+	// Initialises a new instance of the Button class.
 	// Takes a pointer to a variable that will be incremented when the button is pressed, and a value by which to increment said variable.
 	// Also takes a 'Pins' value, which holds the pin that should be checked to see whether the physical button is pressed.
 	Button(int* target_variable_pointer, int change_increment, Pins target_pin);
@@ -46,26 +46,5 @@ public:
 	// Sets the target variable pointer to the given value, so that the button increments a different variable.
 	void set_target_variable(int* target_variable_pointer);
 };
-
-// Temporary variable which buttons will increment and decrement.
-int temp_button_var;
-
-// Pointer to temporary variable
-int* temp_button_var_p = &temp_button_var;
-
-// Increments a given variable by 1 whenever the ButtonAdd1 pin (pin 23) is high.
-Button IncrementBy1{ temp_button_var_p, +1, Pins::ButtonAdd1 };
-
-// Increments a given variable by 10 whenever the ButtonAdd10 pin (pin 24) is high.
-Button IncrementBy10{ temp_button_var_p, +10, Pins::ButtonAdd10 };
-
-// Decrements a given variable by 1 whenever the ButtonTake1 pin (pin 25) is high.
-Button DecrementBy1{ temp_button_var_p, -1, Pins::ButtonTake1 };
-
-// Decrements a given variable by 10 whenever the ButtonTake10 pin (pin 26) is high.
-Button DecrementBy10{ temp_button_var_p, -10, Pins::ButtonTake10 };
-
-// Array of all buttons that will be in use.
-Button buttons[] = { IncrementBy1, IncrementBy10, DecrementBy1, DecrementBy10 };
 
 #endif

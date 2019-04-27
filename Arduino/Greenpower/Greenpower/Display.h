@@ -38,37 +38,82 @@
 //SD_DO    connects to digital pin 12
 //SD_SCK   connects to digital pin 13
 
-// Can alternately just connect to Arduinos reset pin. Set to Analog 4
+// Can alternately just connect to Arduinos reset pin. Set to Analog pin 4.
 constexpr auto LCD_RESET = A4;
-// Chip Select goes to Analog 3
+
+// Chip Select goes to Analog pin 3.
 constexpr auto LCD_CS = A3;
-// Command/Data goes to Analog 2
+
+// Command/Data goes to Analog pin 2.
 constexpr auto LCD_CD = A2;
-// LCD Write goes to Analog 1
+
+// LCD Write goes to Analog pin 1.
 constexpr auto LCD_WR = A1;
-// LCD Read goes to Analog 0
+
+// LCD Read goes to Analog pin 0.
 constexpr auto LCD_RD = A0;
 
 // Assign human-readable names to some common 16-bit color values:
-constexpr auto BLACK = 0x0000;
-constexpr auto BLUE = 0x001F;
-constexpr auto RED = 0xF800;
-constexpr auto GREEN = 0x07E0;
-constexpr auto CYAN = 0x07FF;
-constexpr auto MAGENTA = 0xF81F;
-constexpr auto YELLOW = 0xFFE0;
-constexpr auto WHITE = 0xFFFF;
 
-MCUFRIEND_kbv tft;
-uint16_t identifier;
-char header_message[] = "Andrew is a fookin' nugget!";
-char message[] = "Groop\nI implore thee,\nmy foonting turlingdromes.\nAnd hooptiously drangle me\nwith crinkly bindlewurdles,\nOr I will rend thee\nin the gobberwarts\nwith my blurglecruncheon,\nsee if I don't!";
+// Defines the colour black as a 16-bit value.
+constexpr unsigned short int BLACK = 0x0000;
 
-// Logs debug information about the connected LCD screen to the serial connection.
-void lcd_debug();
+// Defines the colour blue as a 16-bit value.
+constexpr unsigned short int BLUE = 0x001F;
 
-uint16_t get_lcd_id();
+// Defines the colour red as a 16-bit value.
+constexpr unsigned short int RED = 0xF800;
 
-void setup_tft();
+// Defines the colour green as a 16-bit value.
+constexpr unsigned short int GREEN = 0x07E0;
 
+// Defines the colour cyan as a 16-bit value.
+constexpr unsigned short int CYAN = 0x07FF;
+
+// Defines the colour magenta as a 16-bit value.
+constexpr unsigned short int MAGENTA = 0xF81F;
+
+// Defines the colour yellow as a 16-bit value.
+constexpr unsigned short int YELLOW = 0xFFE0;
+
+// Defines the colour white as a 16-bit value.
+constexpr unsigned short int WHITE = 0xFFFF;
+
+// Represents a display that can be written to or drawn on.
+class Display
+{
+private:
+	// The display that we will be drawing to.
+	MCUFRIEND_kbv tft_display;
+
+	// The ID for our display's processing chip.
+	unsigned short int display_identifier;
+
+public:
+	// Initialises a new instance of the Display class.
+	Display();
+
+	// Sets the display up ready for writing or drawing.
+	void setup_display();
+
+	// Gets the identifier for the processing chip of the display.
+	unsigned short int get_display_id() const;
+
+	// Writes the given string message to the display, starting at the given (x, y) cursor position,
+	// setting the text colour to white.
+	void write(char str[], const uint16_t x, const uint16_t y) { write(str, x, y, WHITE); }
+
+	// Writes the given string message to the display, starting at the given (x, y) cursor position,
+	// and in the given 16-bit colour.
+	void write(char str[], uint16_t x, uint16_t y, uint16_t colour);
+};
+
+// Logs debug information about the given LCD screen to the serial connection.
+void lcd_debug(const Display& lcd_display);
+
+// Gets the ID for our display's processing chip. Is inlined whenever it is used for performance reasons.
+inline uint16_t get_lcd_id(MCUFRIEND_kbv lcd_screen)
+{
+	return lcd_screen.readID();
+}
 #endif
