@@ -10,7 +10,6 @@
 #endif
 
 #include <MCUFRIEND_kbv.h>
-#include <cstring>
 
 // wiring with UNO or Mega2560:
 //--------------POWER Pins--------------------------------
@@ -80,6 +79,12 @@ constexpr unsigned short int YELLOW = 0xFFE0;
 // Defines the colour white as a 16-bit value.
 constexpr unsigned short int WHITE = 0xFFFF;
 
+// Gets the ID for our display's processing chip. Inlined for performance reasons.
+inline uint16_t get_lcd_id(MCUFRIEND_kbv lcd_screen)
+{
+	return lcd_screen.readID();
+}
+
 // Represents a display that can be written to or drawn on.
 class Display
 {
@@ -110,7 +115,7 @@ protected:
 	static uint16_t string_size_in_pixels(const char* str, const uint16_t font_size)
 	{
 		// The font size in pixels can be found via: pixel_size = font_size * 10
-		return std::strlen(str)* font_size * 10;
+		return strlen(str)* font_size * 10;
 	}
 
 	// Called to move the display's cursor to the correct position on the screen, and set the
@@ -223,10 +228,4 @@ public:
 
 // Logs debug information about the given LCD screen to the serial connection.
 void lcd_debug(const Display* lcd_display);
-
-// Gets the ID for our display's processing chip. Is inlined whenever it is used for performance reasons.
-inline uint16_t get_lcd_id(MCUFRIEND_kbv lcd_screen)
-{
-	return lcd_screen.readID();
-}
 #endif

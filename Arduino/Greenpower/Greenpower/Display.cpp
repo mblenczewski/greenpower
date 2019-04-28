@@ -5,11 +5,10 @@
 #include "Display.h"
 
 #include <Adafruit_GFX.h>
-#include <cstring>
 
 Display::Display()
 {
-	display_identifier = tft_display.readID();
+	display_identifier = get_lcd_id(tft_display);
 	display_width = tft_display.width();
 	display_height = tft_display.height();
 }
@@ -18,7 +17,7 @@ void Display::setup_display()
 {
 	// We reset the display and read its id
 	tft_display.reset();
-	display_identifier = tft_display.readID();
+	display_identifier = get_lcd_id(tft_display);
 
 	// There is no need to change the id
 	if (display_identifier == 0x9325 || display_identifier == 0x9328 || display_identifier == 0x4535 ||

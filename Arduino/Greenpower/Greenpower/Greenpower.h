@@ -55,15 +55,6 @@ enum class Pins : uint8_t
 	ButtonOvertakeMode = 28,
 };
 
-// Returns the uin8_t equivalent of the given pin.
-inline uint8_t get_pin(Pins pin_name)
-{
-	return static_cast<uint8_t>(pin_name);
-}
-
-// Sets up the pin IO modes of all defined modules (see 'Pins' enum).
-void setup_pin_modes();
-
 // The amount of seconds per race.
 constexpr int RACE_TIME = 36000;
 
@@ -77,5 +68,14 @@ constexpr int THROTTLE_MIN = 0;
 constexpr  int THROTTLE_MAX = 1023;
 
 constexpr int SPEED_CONTROLLER_MAX = 255;
+
+// Returns the uin8_t equivalent of the given pin.
+inline uint8_t get_pin(Pins pin_name)
+{
+	return static_cast<uint8_t>(pin_name);
+}
+
+// Sets up the pin IO modes of all defined modules (see 'Pins' enum).
+void setup_pin_modes();
 
 #endif
