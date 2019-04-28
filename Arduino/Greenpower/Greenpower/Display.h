@@ -89,6 +89,15 @@ private:
 	// The ID for our display's processing chip.
 	unsigned short int display_identifier;
 
+protected:
+	// Called to move the display's cursor to the correct position on the screen, and set the
+	// appropriate colour for drawing.
+	void start_draw(const uint16_t x_pos, const uint16_t y_pos, const uint16_t colour)
+	{
+		tft_display.setCursor(x_pos, y_pos);
+		tft_display.setTextColor(colour);
+	}
+
 public:
 	// Initialises a new instance of the Display class.
 	Display();
@@ -97,19 +106,99 @@ public:
 	void setup_display();
 
 	// Gets the identifier for the processing chip of the display.
-	unsigned short int get_display_id() const;
+	unsigned short int get_display_id() const
+	{
+		return display_identifier;
+	}
 
-	// Writes the given string message to the display, starting at the given (x, y) cursor position,
-	// setting the text colour to white.
-	void write(char str[], const uint16_t x, const uint16_t y) { write(str, x, y, WHITE); }
+	// Writes the given string message to the display, starting at the given (x, y) cursor position.
+	// Writes the message in the default colour (white).
+	void write(char str[], const uint16_t x, const uint16_t y)
+	{
+		write(str, x, y, WHITE);
+	}
 
-	// Writes the given string message to the display, starting at the given (x, y) cursor position,
-	// and in the given 16-bit colour.
+	// Writes the given string message to the display, starting at the given (x, y) cursor position.
+	// Writes the message in the given 16-bit colour.
 	void write(char str[], uint16_t x, uint16_t y, uint16_t colour);
+
+	// Draws a vertical line of the given height, 1 pixel wide, starting at the given (x, y) cursor position.
+	// Draws the line in the default colour (white).
+	void draw_vertical_line(const uint16_t x, const uint16_t y, const uint16_t height)
+	{
+		draw_vertical_line(x, y, height, 1, WHITE);
+	}
+
+	// Draws a vertical line of the given height, 1 pixel wide, starting at the given (x, y) cursor position.
+	// Draws the line in the given 16-bit colour.
+	void draw_vertical_line(const uint16_t x, const uint16_t y, const uint16_t height, const uint16_t colour)
+	{
+		draw_vertical_line(x, y, height, 1, colour);
+	}
+
+	// Draws a vertical line of the given height, of the given thickness, starting at the given (x, y) cursor position.
+	// Draws the line in the given 16-bit colour.
+	void draw_vertical_line(uint16_t x, uint16_t y, uint16_t height, uint16_t thickness, uint16_t colour);
+
+	// Draws a horizontal line of the given width, 1 pixel high, starting at the given (x, y) cursor position.
+	// Draws the line in the default colour (white).
+	void draw_horizontal_line(const uint16_t x, const uint16_t y, const uint16_t width)
+	{
+		draw_horizontal_line(x, y, width, 1, WHITE);
+	}
+
+	// Draws a horizontal line of the given width, 1 pixel high, starting at the given (x, y) cursor position.
+	// Draws the line in the given 16-bit colour.
+	void draw_horizontal_line(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t colour)
+	{
+		draw_horizontal_line(x, y, width, 1, colour);
+	}
+
+	// Draws a horizontal line of the given width, of the given thickness, starting at the given (x, y) cursor position.
+	// Draws the line in the given 16-bit colour.
+	void draw_horizontal_line(uint16_t x, uint16_t y, uint16_t width, uint16_t thickness, uint16_t colour);
+
+	// Draws a filled rectangle, of the given width and height, starting at the given (x, y) cursor position.
+	// Draws the rectangle in the default colour (white).
+	void draw_filled_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height)
+	{
+		draw_filled_rectangle(x, y, width, height, WHITE);
+	}
+
+	// Draws a filled rectangle, of the given width and height, starting at the given (x, y) cursor position.
+	// Draws the rectangle in the given 16-bit colour.
+	void draw_filled_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t colour);
+
+	// Draws a hollow rectangle, of the given width and height, starting at the given (x, y) cursor position.
+	// All lines that make up the rectangle (i.e. the left and right vertical line and the top and bottom horizontal line)
+	// will be 1 pixel thick. Draws the rectangle in the default colour (white).
+	void draw_hollow_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height)
+	{
+		draw_hollow_rectangle(x, y, width, height, WHITE);
+	}
+
+	// Draws a hollow rectangle, of the given width and height, starting at the given (x, y) cursor position.
+	// All lines that make up the rectangle (i.e. the left and right vertical line and the top and bottom horizontal line)
+	// will be 1 pixel thick. Draws the rectangle in the given 16-bit colour.
+	void draw_hollow_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t colour);
+
+	// Draws a hollow rectangle, of the given width and height, starting at the given (x, y) cursor position.
+	// All lines that make up the rectangle (i.e. the left and right vertical line and the top and bottom horizontal line)
+	// will be of the given thickness (in pixels). Draws the rectangle in the given 16-bit colour.
+	void draw_hollow_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t thickness, uint16_t colour);
+
+	// Draws a pixel at the given (x, y) cursor position in the default colour (white).
+	void draw_pixel(const uint16_t x, const uint16_t y)
+	{
+		draw_pixel(x, y, WHITE);
+	}
+
+	// Draws a pixel at the given (x, y) cursor position in the given 16-bit colour.
+	void draw_pixel(uint16_t x, uint16_t y, uint16_t colour);
 };
 
 // Logs debug information about the given LCD screen to the serial connection.
-void lcd_debug(const Display& lcd_display);
+void lcd_debug(const Display* lcd_display);
 
 // Gets the ID for our display's processing chip. Is inlined whenever it is used for performance reasons.
 inline uint16_t get_lcd_id(MCUFRIEND_kbv lcd_screen)

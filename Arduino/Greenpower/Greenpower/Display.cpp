@@ -8,7 +8,7 @@
 
 Display::Display()
 {
-	display_identifier = get_lcd_id(tft_display);
+	display_identifier = tft_display.readID();
 }
 
 void Display::setup_display()
@@ -40,24 +40,63 @@ void Display::setup_display()
 
 	// We clear the screen and reset the position of the cursor.
 	tft_display.fillScreen(BLACK);
-	tft_display.setCursor(0, 0);
-}
-
-unsigned short Display::get_display_id() const
-{
-	return display_identifier;
+	start_draw(0, 0, WHITE);
 }
 
 void Display::write(char str[], const uint16_t x, const uint16_t y, const uint16_t colour)
 {
-	tft_display.setCursor(x, y);
-	tft_display.setTextColor(colour);
+	start_draw(x, y, colour);
 	tft_display.println(str);
 }
 
-void lcd_debug(const Display& lcd_display)
+void Display::draw_vertical_line(const uint16_t x, const uint16_t y, const uint16_t height, const uint16_t thickness,
+	const uint16_t colour)
 {
-	const uint16_t display_identifier = lcd_display.get_display_id();
+	tft_display.fillRect(x, y, thickness, height, colour);
+}
+
+void Display::draw_horizontal_line(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t thickness,
+	const uint16_t colour)
+{
+	tft_display.fillRect(x, y, width, thickness, colour);
+}
+
+void Display::draw_filled_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height,
+	const uint16_t colour)
+{
+	tft_display.fillRect(x, y, width, height, colour);
+}
+
+void Display::draw_hollow_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height,
+	const uint16_t colour)
+{
+	tft_display.drawRect(x, y, width, height, colour);
+}
+
+void Display::draw_hollow_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height,
+	const uint16_t thickness, const uint16_t colour)
+{
+	// Draw the top horizontal line
+	tft_display.fillRect(x, y, width, thickness, colour);
+
+	// Draw the left hand vertical line
+	tft_display.fillRect(x, y, thickness, height, colour);
+
+	// Draw the bottom horizontal line
+	tft_display.fillRect(x, y + height, width, thickness, colour);
+
+	// Draw the right hand vertical line
+	tft_display.fillRect(x + width, y, thickness, height, colour);
+}
+
+void Display::draw_pixel(const uint16_t x, const uint16_t y, const uint16_t colour)
+{
+	tft_display.drawPixel(x, y, colour);
+}
+
+void lcd_debug(const Display* lcd_display)
+{
+	const uint16_t display_identifier = (*lcd_display).get_display_id();
 
 	if (display_identifier == 0x9325)
 	{
