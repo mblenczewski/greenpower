@@ -11,6 +11,8 @@
 
 #include "Greenpower.h"
 
+// Since button is generic, we must add implementation to the header file :(
+
 // Represents a physical button, that stores a physical pin and checks whether the pin is high or low.
 // Should the pin be high (the button is pressed) a function will be performed. Should it not be high,
 // a different function will be performed.
@@ -68,16 +70,42 @@ public:
 	}
 
 	// Checks whether the button is pressed, and executes the functions given by the pointers passed to the constructor accordingly.
-	void check_button();
+	void check_button()
+	{
+		const bool pin_high = digitalRead(pin_to_check) == HIGH;
+
+		// updates the stored 'is_pressed' value
+		// the pin is now high, so the button must be pressed
+		if (!is_pressed && pin_high)
+		{
+			is_pressed = true;
+			pressed_callback_ptr(target_var_ptr);
+		}
+		// the pin is now low, so the button must not be pressed
+		else if (is_pressed && !pin_high)
+		{
+			is_pressed = false;
+			not_pressed_callback_ptr(target_var_ptr);
+		}
+	}
 
 	// Sets the pointer to the targeted variable to the given value, so that the button operates on a different variable.
-	void set_target_variable_ptr(T* target_variable_pointer);
+	void set_target_variable_ptr(T* target_variable_pointer)
+	{
+		target_var_ptr = target_variable_pointer;
+	}
 
 	// Sets the pointer to the pressed callback function to the given value, so a new function is invoked when the button is pressed.
-	void set_pressed_func_ptr(void(*new_pressed_callback_ptr)(T*));
+	void set_pressed_func_ptr(void(*new_pressed_callback_ptr)(T*))
+	{
+		pressed_callback_ptr = new_pressed_callback_ptr;
+	}
 
 	// Sets the pointer to the not pressed callback function to the given value, so a new function is invoked when the button is not pressed.
-	void set_not_pressed_func_ptr(void(*new_not_pressed_callback_ptr)(T*));
+	void set_not_pressed_func_ptr(void(*new_not_pressed_callback_ptr)(T*))
+	{
+		not_pressed_callback_ptr = new_not_pressed_callback_ptr;
+	}
 };
 
 #endif

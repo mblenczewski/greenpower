@@ -82,7 +82,7 @@ private:
 	Button<int> decrement_by10{ nullptr, Pins::ButtonTake10, &decrement_variable_10, &null_func };
 
 	// Array of all incrementation buttons that will be in use.
-	const Button<int>* incrementation_buttons[4] = { &increment_by1, &increment_by10, &decrement_by1, &decrement_by10 };
+	Button<int>* incrementation_buttons[4] = { &increment_by1, &increment_by10, &decrement_by1, &decrement_by10 };
 
 	// Sets or resets the race mode flag if the race button is pressed or not.
 	Button<bool> race_button{ &in_race_mode, Pins::ButtonRaceMode, &set_bool, &reset_bool };
@@ -91,7 +91,7 @@ private:
 	Button<bool> overtake_button{ &in_overtake_mode, Pins::ButtonRaceMode, &set_bool, &reset_bool };
 
 	// Array of all mode buttons that will be in use.
-	const Button<bool>* mode_buttons[2]{ &race_button, &overtake_button };
+	Button<bool>* mode_buttons[2]{ &race_button, &overtake_button };
 
 public:
 	// Initialises a new instance of the CarState class.
