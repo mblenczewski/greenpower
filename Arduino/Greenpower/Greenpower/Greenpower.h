@@ -69,7 +69,7 @@ constexpr  int THROTTLE_MAX = 1023;
 
 constexpr int SPEED_CONTROLLER_MAX = 255;
 
-// Returns the uin8_t equivalent of the given pin.
+// Returns the uin8_t equivalent of the given pin. Inlined for performance reasons.
 inline uint8_t get_pin(Pins pin_name)
 {
 	return static_cast<uint8_t>(pin_name);

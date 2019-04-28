@@ -6,26 +6,20 @@
 #include "Car.h"
 #include "Greenpower.h"
 
-// Temporary variable which buttons will increment and decrement.
-int temp_button_var;
-
-// Pointer to temporary variable
-int* temp_button_var_p = &temp_button_var;
-
 // Increments a given variable by 1 whenever the ButtonAdd1 pin (pin 23) is high.
-const Button INCREMENT_BY1{ temp_button_var_p, +1, Pins::ButtonAdd1 };
+const Button<int> INCREMENT_BY1{ nullptr, Pins::ButtonAdd1, nullptr, nullptr };
 
 // Increments a given variable by 10 whenever the ButtonAdd10 pin (pin 24) is high.
-const Button INCREMENT_BY10{ temp_button_var_p, +10, Pins::ButtonAdd10 };
+const Button<int> INCREMENT_BY10{ nullptr, Pins::ButtonAdd10, nullptr, nullptr };
 
 // Decrements a given variable by 1 whenever the ButtonTake1 pin (pin 25) is high.
-const Button DECREMENT_BY1{ temp_button_var_p, -1, Pins::ButtonTake1 };
+const Button<int> DECREMENT_BY1{ nullptr, Pins::ButtonTake1, nullptr, nullptr };
 
 // Decrements a given variable by 10 whenever the ButtonTake10 pin (pin 26) is high.
-const Button DECREMENT_BY10{ temp_button_var_p, -10, Pins::ButtonTake10 };
+const Button<int> DECREMENT_BY10{ nullptr, Pins::ButtonTake10, nullptr, nullptr };
 
 // Array of all buttons that will be in use.
-const Button BUTTONS[] = { INCREMENT_BY1, INCREMENT_BY10, DECREMENT_BY1, DECREMENT_BY10 };
+const Button<int> BUTTONS[] = { INCREMENT_BY1, INCREMENT_BY10, DECREMENT_BY1, DECREMENT_BY10 };
 
 // Represents the car.
 CarState car;

@@ -12,8 +12,9 @@
 #include "Greenpower.h"
 
 // Represents a physical button, that stores a physical pin and checks whether the pin is high or low.
-// Increments a given variable by a given amount if the pin is high, and does nothing if the pin is low.
-// The incremented variable is given via a pointer.
+// Should the pin be high (the button is pressed) a function will be performed. Should it not be high,
+// a different function will be performed.
+template<typename T>
 class Button
 {
 private:
@@ -21,30 +22,40 @@ private:
 	uint8_t pin_to_check;
 
 	// Reference to the variable that will be incremented or decremented on a button press.
-	int* target_var_p;
+	T* target_var_ptr;
 
-	// The amount that the target variable (see 'target_var_ref') should be incremented by.
-	int change_interval;
+	// Pointer to a function that will be executed when the button is pressed.
+	void(*pressed_callback_ptr)(T* target_variable);
+
+	// Pointer to a function that will be executed when the button is not pressed.
+	void(*not_pressed_callback_ptr)(T* target_variable);
 
 	// Whether the button was pressed last tick.
 	bool is_pressed;
 
 public:
 	// Initialises a new instance of the Button class.
-	// Takes a pointer to a variable that will be incremented when the button is pressed, and a value by which to increment said variable.
-	// Also takes a 'uint8_t', which holds the pin that should be checked to see whether the physical button is pressed.
-	Button(int* target_variable_pointer, int change_increment, uint8_t target_pin);
+	// Takes a pointer to a variable , and two pointers to functions that will operate on said variable. One function will only
+	// be invoked if the button is not pressed, and vice versa. Also takes a uint8_t value, which holds the pin that should be checked
+	// to see whether the physical button is pressed.
+	Button(T* target_variable_pointer, uint8_t target_pin, void(*button_pressed_callback_ptr)(T*), void(*button_not_pressed_callback_ptr)(T*));
 
 	// Initialises a new instance of the Button class.
-	// Takes a pointer to a variable that will be incremented when the button is pressed, and a value by which to increment said variable.
-	// Also takes a 'Pins' value, which holds the pin that should be checked to see whether the physical button is pressed.
-	Button(int* target_variable_pointer, int change_increment, Pins target_pin);
+	// Takes a pointer to a variable , and two pointers to functions that will operate on said variable. One function will only
+	// be invoked if the button is not pressed, and vice versa. Also takes a Pins value, which holds the pin that should be checked
+	// to see whether the physical button is pressed.
+	Button(T* target_variable_pointer, Pins target_pin, void(*button_pressed_callback_ptr)(T*), void(*button_not_pressed_callback_ptr)(T*));
 
-	// Checks whether the pin given in the constructor (given as a 'BtnTarget') is high. If so, increments the given variable (via its pointer).
-	void check_pin();
+	// Checks whether the button is pressed, and executes the functions given by the pointers passed to the constructor accordingly.
+	void check_button();
 
-	// Sets the target variable pointer to the given value, so that the button increments a different variable.
-	void set_target_variable(int* target_variable_pointer);
+	// Sets the pointer to the targeted variable to the given value, so that the button operates on a different variable.
+	void set_target_variable_ptr(T* target_variable_pointer);
+
+	// Sets the pointer to the pressed callback function to the given value, so a new function is invoked when the button is pressed.
+	void set_pressed_func_ptr(void(*new_pressed_callback_ptr)(T*));
+
+	// Sets the pointer to the not pressed callback function to the given value, so a new function is invoked when the button is not pressed.
+	void set_not_pressed_func_ptr(void(*new_not_pressed_callback_ptr)(T*));
 };
-
 #endif

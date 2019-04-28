@@ -4,25 +4,36 @@
 
 #include "Button.h"
 
-Button::Button(int* target_variable_pointer, int change_increment, uint8_t target_pin)
+template <typename T>
+Button<T>::Button(T* target_variable_pointer, uint8_t target_pin, void(*button_pressed_callback_ptr)(T*),
+	void(*button_not_pressed_callback_ptr)(T*))
 {
 	pin_to_check = target_pin;
-	target_var_p = target_variable_pointer;
-	change_interval = change_increment;
+	target_var_ptr = target_variable_pointer;
+
+	// Function pointers are assigned
+	pressed_callback_ptr = button_not_pressed_callback_ptr;
+	not_pressed_callback_ptr = button_not_pressed_callback_ptr;
 
 	is_pressed = digitalRead(pin_to_check) == HIGH;
 }
 
-Button::Button(int* target_variable_pointer, int change_increment, Pins target_pin)
+template <typename T>
+Button<T>::Button(T* target_variable_pointer, Pins target_pin, void(*button_pressed_callback_ptr)(T*),
+	void(*button_not_pressed_callback_ptr)(T*))
 {
-	pin_to_check = static_cast<uint8_t>(target_pin);
-	target_var_p = target_variable_pointer;
-	change_interval = change_increment;
+	pin_to_check = get_pin(target_pin);
+	target_var_ptr = target_variable_pointer;
+
+	// Function pointers are assigned
+	pressed_callback_ptr = button_not_pressed_callback_ptr;
+	not_pressed_callback_ptr = button_not_pressed_callback_ptr;
 
 	is_pressed = digitalRead(pin_to_check) == HIGH;
 }
 
-void Button::check_pin()
+template <typename T>
+void Button<T>::check_button()
 {
 	const bool pin_high = digitalRead(pin_to_check) == HIGH;
 
@@ -31,16 +42,30 @@ void Button::check_pin()
 	if (!is_pressed && pin_high)
 	{
 		is_pressed = true;
-		*target_var_p += change_interval;
+		pressed_callback_ptr(target_var_ptr);
 	}
 	// the pin is now low, so the button must not be pressed
 	else if (is_pressed && !pin_high)
 	{
 		is_pressed = false;
+		not_pressed_callback_ptr(target_var_ptr);
 	}
 }
 
-void Button::set_target_variable(int* target_variable_pointer)
+template <typename T>
+void Button<T>::set_target_variable_ptr(T* target_variable_pointer)
 {
-	target_var_p = target_variable_pointer;
+	target_var_ptr = target_variable_pointer;
+}
+
+template <typename T>
+void Button<T>::set_pressed_func_ptr(void(*new_pressed_callback_ptr)(T*))
+{
+	pressed_callback_ptr = new_pressed_callback_ptr;
+}
+
+template <typename T>
+void Button<T>::set_not_pressed_func_ptr(void(*new_not_pressed_callback_ptr)(T*))
+{
+	not_pressed_callback_ptr = new_not_pressed_callback_ptr;
 }
