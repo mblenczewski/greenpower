@@ -5,34 +5,6 @@
 #include "Button.h"
 
 template <typename T>
-Button<T>::Button(T* target_variable_pointer, uint8_t target_pin, void(*button_pressed_callback_ptr)(T*),
-	void(*button_not_pressed_callback_ptr)(T*))
-{
-	pin_to_check = target_pin;
-	target_var_ptr = target_variable_pointer;
-
-	// Function pointers are assigned
-	pressed_callback_ptr = button_not_pressed_callback_ptr;
-	not_pressed_callback_ptr = button_not_pressed_callback_ptr;
-
-	is_pressed = digitalRead(pin_to_check) == HIGH;
-}
-
-template <typename T>
-Button<T>::Button(T* target_variable_pointer, Pins target_pin, void(*button_pressed_callback_ptr)(T*),
-	void(*button_not_pressed_callback_ptr)(T*))
-{
-	pin_to_check = get_pin(target_pin);
-	target_var_ptr = target_variable_pointer;
-
-	// Function pointers are assigned
-	pressed_callback_ptr = button_not_pressed_callback_ptr;
-	not_pressed_callback_ptr = button_not_pressed_callback_ptr;
-
-	is_pressed = digitalRead(pin_to_check) == HIGH;
-}
-
-template <typename T>
 void Button<T>::check_button()
 {
 	const bool pin_high = digitalRead(pin_to_check) == HIGH;

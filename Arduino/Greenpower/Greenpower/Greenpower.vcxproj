@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="ButtonFunctions.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="Greenpower.h" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ButtonFunctions.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Greenpower.cpp" />

@@ -58,17 +58,6 @@ enum class Pins : uint8_t
 // The amount of seconds per race.
 constexpr int RACE_TIME = 36000;
 
-// Total amount of power in the battery when fully charged (P=IV).
-constexpr int BATTERY_CAPACITY = 3400;
-
-// The minimum reading for the throttle controlling pin.
-constexpr int THROTTLE_MIN = 0;
-
-// The maximum reading for the throttle controlling pin.
-constexpr  int THROTTLE_MAX = 1023;
-
-constexpr int SPEED_CONTROLLER_MAX = 255;
-
 // Returns the uin8_t equivalent of the given pin. Inlined for performance reasons.
 inline uint8_t get_pin(Pins pin_name)
 {

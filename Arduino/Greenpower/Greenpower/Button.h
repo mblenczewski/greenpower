@@ -38,13 +38,34 @@ public:
 	// Takes a pointer to a variable , and two pointers to functions that will operate on said variable. One function will only
 	// be invoked if the button is not pressed, and vice versa. Also takes a uint8_t value, which holds the pin that should be checked
 	// to see whether the physical button is pressed.
-	Button(T* target_variable_pointer, uint8_t target_pin, void(*button_pressed_callback_ptr)(T*), void(*button_not_pressed_callback_ptr)(T*));
+	Button(T* target_variable_pointer, uint8_t target_pin, void(*button_pressed_callback_ptr)(T*), void(*button_not_pressed_callback_ptr)(T*))
+	{
+		pin_to_check = target_pin;
+		target_var_ptr = target_variable_pointer;
+
+		// Function pointers are assigned
+		pressed_callback_ptr = button_not_pressed_callback_ptr;
+		not_pressed_callback_ptr = button_not_pressed_callback_ptr;
+
+		is_pressed = digitalRead(pin_to_check) == HIGH;
+	}
 
 	// Initialises a new instance of the Button class.
 	// Takes a pointer to a variable , and two pointers to functions that will operate on said variable. One function will only
 	// be invoked if the button is not pressed, and vice versa. Also takes a Pins value, which holds the pin that should be checked
 	// to see whether the physical button is pressed.
-	Button(T* target_variable_pointer, Pins target_pin, void(*button_pressed_callback_ptr)(T*), void(*button_not_pressed_callback_ptr)(T*));
+	Button(T* target_variable_pointer, Pins target_pin, void (*button_pressed_callback_ptr)(T*),
+		void (*button_not_pressed_callback_ptr)(T*))
+	{
+		pin_to_check = get_pin(target_pin);
+		target_var_ptr = target_variable_pointer;
+
+		// Function pointers are assigned
+		pressed_callback_ptr = button_not_pressed_callback_ptr;
+		not_pressed_callback_ptr = button_not_pressed_callback_ptr;
+
+		is_pressed = digitalRead(pin_to_check) == HIGH;
+	}
 
 	// Checks whether the button is pressed, and executes the functions given by the pointers passed to the constructor accordingly.
 	void check_button();
@@ -58,4 +79,5 @@ public:
 	// Sets the pointer to the not pressed callback function to the given value, so a new function is invoked when the button is not pressed.
 	void set_not_pressed_func_ptr(void(*new_not_pressed_callback_ptr)(T*));
 };
+
 #endif
