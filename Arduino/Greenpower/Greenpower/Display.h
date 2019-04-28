@@ -10,6 +10,7 @@
 #endif
 
 #include <MCUFRIEND_kbv.h>
+#include <cstring>
 
 // wiring with UNO or Mega2560:
 //--------------POWER Pins--------------------------------
@@ -89,13 +90,36 @@ private:
 	// The ID for our display's processing chip.
 	unsigned short int display_identifier;
 
+	// The width and height of the display.
+	unsigned short int display_width, display_height;
+
+	// The default size for any text written to the screen. Rendered text size in pixels
+	// is calculated via the following equation: pixel_size = font_size * 10.
+	const unsigned short int TEXT_SIZE = 3;
+
+	// The default background colour for the screen.
+	const unsigned short int BG_COLOUR = BLACK;
+
+	// The default foreground colour for the screen.
+	const unsigned short int FG_COLOUR = WHITE;
+
 protected:
+
+	// Returns the number of pixels that the given string message will take up on the display
+	// at the given font size. Inlined for performance reasons.
+	static uint16_t string_size_in_pixels(const char* str, const uint16_t font_size)
+	{
+		// The font size in pixels can be found via: pixel_size = font_size * 10
+		return std::strlen(str)* font_size * 10;
+	}
+
 	// Called to move the display's cursor to the correct position on the screen, and set the
-	// appropriate colour for drawing.
-	void start_draw(const uint16_t x_pos, const uint16_t y_pos, const uint16_t colour)
+	// appropriate colour for drawing text. Inlined for performance reasons.
+	void start_draw_text(const uint16_t x_pos, const uint16_t y_pos, const uint16_t text_colour, const uint16_t text_size)
 	{
 		tft_display.setCursor(x_pos, y_pos);
-		tft_display.setTextColor(colour);
+		tft_display.setTextSize(text_size);
+		tft_display.setTextColor(text_colour);
 	}
 
 public:
@@ -112,21 +136,21 @@ public:
 	}
 
 	// Writes the given string message to the display, starting at the given (x, y) cursor position.
-	// Writes the message in the default colour (white).
-	void write(char str[], const uint16_t x, const uint16_t y)
+	// Writes the message in the default colour (white) and default font size.
+	void write(const char* str, const uint16_t x, const uint16_t y)
 	{
-		write(str, x, y, WHITE);
+		write(str, x, y, FG_COLOUR, TEXT_SIZE);
 	}
 
 	// Writes the given string message to the display, starting at the given (x, y) cursor position.
-	// Writes the message in the given 16-bit colour.
-	void write(char str[], uint16_t x, uint16_t y, uint16_t colour);
+	// Writes the message in the given 16-bit colour, and with the given font size.
+	void write(const char* str, uint16_t x, uint16_t y, uint16_t colour, uint16_t size);
 
 	// Draws a vertical line of the given height, 1 pixel wide, starting at the given (x, y) cursor position.
 	// Draws the line in the default colour (white).
 	void draw_vertical_line(const uint16_t x, const uint16_t y, const uint16_t height)
 	{
-		draw_vertical_line(x, y, height, 1, WHITE);
+		draw_vertical_line(x, y, height, 1, FG_COLOUR);
 	}
 
 	// Draws a vertical line of the given height, 1 pixel wide, starting at the given (x, y) cursor position.
@@ -144,7 +168,7 @@ public:
 	// Draws the line in the default colour (white).
 	void draw_horizontal_line(const uint16_t x, const uint16_t y, const uint16_t width)
 	{
-		draw_horizontal_line(x, y, width, 1, WHITE);
+		draw_horizontal_line(x, y, width, 1, FG_COLOUR);
 	}
 
 	// Draws a horizontal line of the given width, 1 pixel high, starting at the given (x, y) cursor position.
@@ -162,7 +186,7 @@ public:
 	// Draws the rectangle in the default colour (white).
 	void draw_filled_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height)
 	{
-		draw_filled_rectangle(x, y, width, height, WHITE);
+		draw_filled_rectangle(x, y, width, height, FG_COLOUR);
 	}
 
 	// Draws a filled rectangle, of the given width and height, starting at the given (x, y) cursor position.
@@ -174,7 +198,7 @@ public:
 	// will be 1 pixel thick. Draws the rectangle in the default colour (white).
 	void draw_hollow_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height)
 	{
-		draw_hollow_rectangle(x, y, width, height, WHITE);
+		draw_hollow_rectangle(x, y, width, height, FG_COLOUR);
 	}
 
 	// Draws a hollow rectangle, of the given width and height, starting at the given (x, y) cursor position.
@@ -190,7 +214,7 @@ public:
 	// Draws a pixel at the given (x, y) cursor position in the default colour (white).
 	void draw_pixel(const uint16_t x, const uint16_t y)
 	{
-		draw_pixel(x, y, WHITE);
+		draw_pixel(x, y, FG_COLOUR);
 	}
 
 	// Draws a pixel at the given (x, y) cursor position in the given 16-bit colour.

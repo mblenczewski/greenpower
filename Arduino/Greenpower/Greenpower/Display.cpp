@@ -5,10 +5,13 @@
 #include "Display.h"
 
 #include <Adafruit_GFX.h>
+#include <cstring>
 
 Display::Display()
 {
 	display_identifier = tft_display.readID();
+	display_width = tft_display.width();
+	display_height = tft_display.height();
 }
 
 void Display::setup_display()
@@ -39,13 +42,30 @@ void Display::setup_display()
 	tft_display.begin(display_identifier);
 
 	// We clear the screen and reset the position of the cursor.
-	tft_display.fillScreen(BLACK);
-	start_draw(0, 0, WHITE);
+	tft_display.fillScreen(BG_COLOUR);
+	start_draw_text(0, 0, FG_COLOUR, TEXT_SIZE);
 }
 
-void Display::write(char str[], const uint16_t x, const uint16_t y, const uint16_t colour)
+void Display::write(const char* str, const uint16_t x, const uint16_t y, const uint16_t colour, const uint16_t size)
 {
-	start_draw(x, y, colour);
+	start_draw_text(x, y, colour, size);
+
+	// To speed up drawing, we will blank out only those parts of the image that need to be changed.
+	// First we need to check to see if the message will wrap the screen.
+	const unsigned short int str_size = string_size_in_pixels(str, size);
+	const bool wraps_line = str_size + x > display_width;
+
+	// Further wrapping calculation is hard, so we just reset the whole screen (for now)
+	if (wraps_line)
+	{
+		tft_display.fillScreen(BG_COLOUR);
+	}
+	// Otherwise we can easily calculate the amount of pixels that must be blanked out.
+	else
+	{
+		tft_display.fillRect(x, y, str_size, size * 10, BG_COLOUR);
+	}
+
 	tft_display.println(str);
 }
 
