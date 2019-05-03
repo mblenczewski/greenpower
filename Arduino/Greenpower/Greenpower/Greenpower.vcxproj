@@ -117,7 +117,7 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="Greenpower.h" />
-    <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="state_machine.h" />
     <ClInclude Include="__vm\.Greenpower.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +126,7 @@
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Greenpower.cpp" />
-    <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="state_machine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

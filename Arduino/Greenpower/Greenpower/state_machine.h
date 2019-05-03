@@ -70,7 +70,7 @@ struct State
 const State NULL_STATE{};
 
 // Represents a state machine, holding an array of states and an array of transitions between those states.
-class StateMachine
+class state_machine
 {
 private:
 	// The amount of milliseconds that have elapsed since the Arduino was started..
@@ -85,7 +85,7 @@ private:
 public:
 	// Initialises a new instance of the StateMachine class.
 	// Sets up the state array and initialises the current state to the first element in the state array.
-	StateMachine(const State states[]);
+	state_machine(const State states[]);
 
 	// Updates the internal state of the state machine. Given the milliseconds from Arduino power-on (using millis()),
 	// will update the internal state of the state machine. If the current state has expired will transition to the next

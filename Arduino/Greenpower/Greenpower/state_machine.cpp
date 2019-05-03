@@ -2,7 +2,7 @@
 //
 //
 
-#include "StateMachine.h"
+#include "state_machine.h"
 #include "Greenpower.h"
 
 Transition::Transition(State* ending_state)
@@ -17,7 +17,7 @@ State::State(const unsigned long state_duration_ms, const Transition ending_tran
 	this->action = action;
 }
 
-StateMachine::StateMachine(const State states[])
+state_machine::state_machine(const State states[])
 {
 	milliseconds = 0;
 
@@ -37,7 +37,7 @@ StateMachine::StateMachine(const State states[])
 	}
 }
 
-void StateMachine::update_state(const unsigned long elapsed_time_ms)
+void state_machine::update_state(const unsigned long elapsed_time_ms)
 {
 	// Avoid handling null pointers; exceptional behaviour
 	if (current_state == nullptr)

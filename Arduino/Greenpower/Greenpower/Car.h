@@ -13,7 +13,7 @@
 #include "ButtonFunctions.h"
 #include "Display.h"
 #include "Greenpower.h"
-#include "StateMachine.h"
+#include "state_machine.h"
 
 // Total amount of power in the battery when fully charged (P=IV).
 constexpr int BATTERY_CAPACITY = 3400;
@@ -94,8 +94,11 @@ private:
 	// Array of all mode buttons that will be in use.
 	Button<bool>* mode_buttons[2]{ &race_button, &overtake_button };
 
-	// Temporary state machine declaration.
-	StateMachine my_state_machine{ State{0, NULL_TRANSITION, nullptr} };
+	// States for the state machine.
+	State states[1] = { NULL_STATE };
+
+	// State machine for co-operative multitasking.
+	state_machine my_state_machine{ states };
 
 public:
 	// Initialises a new instance of the CarState class.
