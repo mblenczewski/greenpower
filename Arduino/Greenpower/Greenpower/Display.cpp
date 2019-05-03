@@ -9,8 +9,6 @@
 Display::Display()
 {
 	display_identifier = get_lcd_id(tft_display);
-	display_width = tft_display.width();
-	display_height = tft_display.height();
 }
 
 void Display::setup_display()
@@ -45,55 +43,42 @@ void Display::setup_display()
 	start_draw_text(0, 0, FG_COLOUR, TEXT_SIZE);
 }
 
-void Display::write(const char* str, const uint16_t x, const uint16_t y, const uint16_t colour, const uint16_t size)
+void Display::write(const char* str, const int x, const int y, const uint16_t colour, const int size)
 {
 	start_draw_text(x, y, colour, size);
-
-	// To speed up drawing, we will blank out only those parts of the image that need to be changed.
-	// First we need to check to see if the message will wrap the screen.
-	const unsigned short int str_size = string_size_in_pixels(str, size);
-	const bool wraps_line = str_size + x > display_width;
-
-	// Further wrapping calculation is hard, so we just reset the whole screen (for now)
-	if (wraps_line)
-	{
-		tft_display.fillScreen(BG_COLOUR);
-	}
-	// Otherwise we can easily calculate the amount of pixels that must be blanked out.
-	else
-	{
-		tft_display.fillRect(x, y, str_size, size * 10, BG_COLOUR);
-	}
 
 	tft_display.println(str);
 }
 
-void Display::draw_vertical_line(const uint16_t x, const uint16_t y, const uint16_t height, const uint16_t thickness,
-	const uint16_t colour)
+void Display::write_printable(Printable* printable, const int x, const int y, const uint16_t colour, const int size)
+{
+	start_draw_text(x, y, colour, size);
+
+	tft_display.println(*printable);
+}
+
+void Display::draw_vertical_line(const int x, const int y, const int height, const int thickness, const uint16_t colour)
 {
 	tft_display.fillRect(x, y, thickness, height, colour);
 }
 
-void Display::draw_horizontal_line(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t thickness,
-	const uint16_t colour)
+void Display::draw_horizontal_line(const int x, const int y, const int width, const int thickness, const uint16_t colour)
 {
 	tft_display.fillRect(x, y, width, thickness, colour);
 }
 
-void Display::draw_filled_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height,
-	const uint16_t colour)
+void Display::draw_filled_rectangle(const int x, const int y, const int width, const int height, const uint16_t colour)
 {
 	tft_display.fillRect(x, y, width, height, colour);
 }
 
-void Display::draw_hollow_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height,
-	const uint16_t colour)
+void Display::draw_hollow_rectangle(const int x, const int y, const int width, const int height, const uint16_t colour)
 {
 	tft_display.drawRect(x, y, width, height, colour);
 }
 
-void Display::draw_hollow_rectangle(const uint16_t x, const uint16_t y, const uint16_t width, const uint16_t height,
-	const uint16_t thickness, const uint16_t colour)
+void Display::draw_hollow_rectangle(const int x, const int y, const int width, const int height, const int thickness,
+	const uint16_t colour)
 {
 	// Draw the top horizontal line
 	tft_display.fillRect(x, y, width, thickness, colour);
@@ -108,7 +93,7 @@ void Display::draw_hollow_rectangle(const uint16_t x, const uint16_t y, const ui
 	tft_display.fillRect(x + width, y, thickness, height, colour);
 }
 
-void Display::draw_pixel(const uint16_t x, const uint16_t y, const uint16_t colour)
+void Display::draw_pixel(const int x, const int y, const uint16_t colour)
 {
 	tft_display.drawPixel(x, y, colour);
 }

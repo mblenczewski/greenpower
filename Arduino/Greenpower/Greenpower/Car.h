@@ -13,6 +13,7 @@
 #include "ButtonFunctions.h"
 #include "Display.h"
 #include "Greenpower.h"
+#include "StateMachine.h"
 
 // Total amount of power in the battery when fully charged (P=IV).
 constexpr int BATTERY_CAPACITY = 3400;
@@ -93,6 +94,9 @@ private:
 	// Array of all mode buttons that will be in use.
 	Button<bool>* mode_buttons[2]{ &race_button, &overtake_button };
 
+	// Temporary state machine declaration.
+	StateMachine my_state_machine{ State{0, NULL_TRANSITION, nullptr} };
+
 public:
 	// Initialises a new instance of the CarState class.
 	CarState();
@@ -101,7 +105,7 @@ public:
 	void update_buttons() const;
 
 	// Returns the current mode of the car.
-	CarMode get_car_mode() const;
+	inline CarMode get_car_mode() const;
 
 	// Updates the car's internal state.
 	void next_tick();

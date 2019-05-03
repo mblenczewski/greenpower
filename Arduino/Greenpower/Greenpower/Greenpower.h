@@ -15,6 +15,55 @@ int _loop();
 // Main function that will be executed when the Arduino receives power.
 int main();
 
+// Represents a 2 dimensional vector.
+template <typename T>
+struct vector2
+{
+	// The x component of the vector.
+	T x;
+
+	// The y component of the vector.
+	T y;
+};
+
+// Represents a 3 dimensional vector.
+template <typename T>
+struct vector3
+{
+	// The x component of the vector.
+	T x;
+
+	// The y component of the vector.
+	T y;
+
+	// The z component of the vector.
+	T z;
+};
+
+// Represents a 4 dimensional vector.
+template <typename T>
+struct vector4
+{
+	// The x component of the vector.
+	T x;
+
+	// The y component of the vector.
+	T y;
+
+	// The z component of the vector.
+	T z;
+
+	// The w component of the vector.
+	T w;
+};
+
+// Returns the amount of items in the given array.
+template <typename T>
+size_t array_length(T arr[])
+{
+	return sizeof(arr) / sizeof(T);
+}
+
 // Stores all the possible components and their respective pins (the pins they affect and read).
 enum class Pins : uint8_t
 {
