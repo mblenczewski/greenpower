@@ -1,0 +1,23 @@
+Inputs:
+ throttle pedal
+ overtake button
+ 
+ current limit + 1
+            .. + 10
+            .. - 1
+            .. - 10
+
+ voltage (potential divider)
+ current (hall-effect sensor)
+
+
+Outputs:
+ current control
+ display
+
+
+Global Variables:
+ bool  is overtaking?
+ ulong time
+ int   current limit
+ 
