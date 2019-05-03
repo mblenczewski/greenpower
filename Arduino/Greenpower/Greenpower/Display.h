@@ -87,7 +87,7 @@ inline uint16_t get_lcd_id(MCUFRIEND_kbv lcd_screen)
 }
 
 // Represents a display that can be written to or drawn on.
-class Display
+class display
 {
 private:
 	// The display that we will be drawing to.
@@ -97,7 +97,7 @@ private:
 	unsigned short int display_identifier;
 
 	// Holds the size of the display (x = width, y = height).
-	vector2<int> display_size{ tft_display.width(), tft_display.height() };
+	vec2<int> display_size{ tft_display.width(), tft_display.height() };
 
 	// The default size for any text written to the screen. Rendered text size in pixels
 	// is calculated via the following equation: pixel_size = font_size * 10.
@@ -130,7 +130,7 @@ protected:
 
 public:
 	// Initialises a new instance of the Display class.
-	Display();
+	display();
 
 	// Sets the display up ready for writing or drawing.
 	void setup_display();
@@ -142,7 +142,7 @@ public:
 	}
 
 	// Gets the size of the display.
-	vector2<int> get_display_size() const
+	vec2<int> get_display_size() const
 	{
 		return display_size;
 	}
@@ -238,5 +238,5 @@ public:
 };
 
 // Logs debug information about the given LCD screen to the serial connection.
-void lcd_debug(const Display* lcd_display);
+void lcd_debug(const display* lcd_display);
 #endif

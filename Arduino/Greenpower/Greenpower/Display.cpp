@@ -6,12 +6,12 @@
 
 #include <Adafruit_GFX.h>
 
-Display::Display()
+display::display()
 {
 	display_identifier = get_lcd_id(tft_display);
 }
 
-void Display::setup_display()
+void display::setup_display()
 {
 	// We reset the display and read its id
 	tft_display.reset();
@@ -43,41 +43,41 @@ void Display::setup_display()
 	start_draw_text(0, 0, FG_COLOUR, TEXT_SIZE);
 }
 
-void Display::write(const char* str, const int x, const int y, const uint16_t colour, const int size)
+void display::write(const char* str, const int x, const int y, const uint16_t colour, const int size)
 {
 	start_draw_text(x, y, colour, size);
 
 	tft_display.println(str);
 }
 
-void Display::write_printable(Printable* printable, const int x, const int y, const uint16_t colour, const int size)
+void display::write_printable(Printable* printable, const int x, const int y, const uint16_t colour, const int size)
 {
 	start_draw_text(x, y, colour, size);
 
 	tft_display.println(*printable);
 }
 
-void Display::draw_vertical_line(const int x, const int y, const int height, const int thickness, const uint16_t colour)
+void display::draw_vertical_line(const int x, const int y, const int height, const int thickness, const uint16_t colour)
 {
 	tft_display.fillRect(x, y, thickness, height, colour);
 }
 
-void Display::draw_horizontal_line(const int x, const int y, const int width, const int thickness, const uint16_t colour)
+void display::draw_horizontal_line(const int x, const int y, const int width, const int thickness, const uint16_t colour)
 {
 	tft_display.fillRect(x, y, width, thickness, colour);
 }
 
-void Display::draw_filled_rectangle(const int x, const int y, const int width, const int height, const uint16_t colour)
+void display::draw_filled_rectangle(const int x, const int y, const int width, const int height, const uint16_t colour)
 {
 	tft_display.fillRect(x, y, width, height, colour);
 }
 
-void Display::draw_hollow_rectangle(const int x, const int y, const int width, const int height, const uint16_t colour)
+void display::draw_hollow_rectangle(const int x, const int y, const int width, const int height, const uint16_t colour)
 {
 	tft_display.drawRect(x, y, width, height, colour);
 }
 
-void Display::draw_hollow_rectangle(const int x, const int y, const int width, const int height, const int thickness,
+void display::draw_hollow_rectangle(const int x, const int y, const int width, const int height, const int thickness,
 	const uint16_t colour)
 {
 	// Draw the top horizontal line
@@ -93,12 +93,12 @@ void Display::draw_hollow_rectangle(const int x, const int y, const int width, c
 	tft_display.fillRect(x + width, y, thickness, height, colour);
 }
 
-void Display::draw_pixel(const int x, const int y, const uint16_t colour)
+void display::draw_pixel(const int x, const int y, const uint16_t colour)
 {
 	tft_display.drawPixel(x, y, colour);
 }
 
-void lcd_debug(const Display* lcd_display)
+void lcd_debug(const display* lcd_display)
 {
 	const uint16_t display_identifier = (*lcd_display).get_display_id();
 

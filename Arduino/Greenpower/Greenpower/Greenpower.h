@@ -17,44 +17,13 @@ int main();
 
 // Represents a 2 dimensional vector.
 template <typename T>
-struct vector2
+struct vec2
 {
 	// The x component of the vector.
 	T x;
 
 	// The y component of the vector.
 	T y;
-};
-
-// Represents a 3 dimensional vector.
-template <typename T>
-struct vector3
-{
-	// The x component of the vector.
-	T x;
-
-	// The y component of the vector.
-	T y;
-
-	// The z component of the vector.
-	T z;
-};
-
-// Represents a 4 dimensional vector.
-template <typename T>
-struct vector4
-{
-	// The x component of the vector.
-	T x;
-
-	// The y component of the vector.
-	T y;
-
-	// The z component of the vector.
-	T z;
-
-	// The w component of the vector.
-	T w;
 };
 
 // Returns the amount of items in the given array.
@@ -65,50 +34,50 @@ size_t array_length(T arr[])
 }
 
 // Stores all the possible components and their respective pins (the pins they affect and read).
-enum class Pins : uint8_t
+enum class pins : uint8_t
 {
 	// The ammeter; on analog pin 0.
-	Ammeter = A0,
+	ammeter = A0,
 
 	// The voltmeter; on analog pin 1.
-	Voltmeter = A1,
+	voltmeter = A1,
 
 	// The throttle; on analog pin 2.
-	Throttle = A2,
+	throttle = A2,
 
 	// The RF module; on pin 1.
-	Radio = 1,
+	radio = 1,
 
 	// The speed controller; on pin 2.
-	SpeedController = 2,
+	speed_controller = 2,
 
 	// The tachometer; on pin 22.
-	Tachometer = 22,
+	tachometer = 22,
 
 	// The button that needs to be pressed to increment a variable by 1.
-	ButtonAdd1 = 23,
+	button_add1 = 23,
 
 	// The button that needs to be pressed to increment a variable by 10.
-	ButtonAdd10 = 24,
+	button_add10 = 24,
 
 	// The button that needs to be pressed to decrement a variable by 1.
-	ButtonTake1 = 25,
+	button_take1 = 25,
 
 	// The button that needs to be pressed to decrement a variable by 10.
-	ButtonTake10 = 26,
+	button_take10 = 26,
 
 	// The button that needs to be pressed to toggle 'Race Mode'.
-	ButtonRaceMode = 27,
+	button_race_mode = 27,
 
 	// The button that needs to be pressed to toggle 'Overtake Mode'.
-	ButtonOvertakeMode = 28,
+	button_overtake_mode = 28,
 };
 
-// The amount of seconds per race.
-constexpr int RACE_TIME = 36000;
+// The amount of milliseconds per race.
+constexpr int RACE_TIME = 36000000;
 
 // Returns the uin8_t equivalent of the given pin. Inlined for performance reasons.
-inline uint8_t get_pin(Pins pin_name)
+inline uint8_t get_pin(pins pin_name)
 {
 	return static_cast<uint8_t>(pin_name);
 }

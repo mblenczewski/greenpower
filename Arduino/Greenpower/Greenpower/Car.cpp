@@ -5,59 +5,63 @@
 #include "Button.h"
 #include "Car.h"
 
-CarState::CarState()
+car_state::car_state()
 {
 	display.setup_display();
 }
 
-void CarState::update_buttons() const
+void car_state::update_buttons() const
 {
 	// Update the car's mode buttons
-	for (Button<bool>* button : mode_buttons)
+	for (button<bool>* button : mode_buttons)
 	{
 		button->check_button();
 	}
 
 	// Update the car's increment buttons
-	for (Button<int>* button : incrementation_buttons)
+	for (button<int>* button : incrementation_buttons)
 	{
 		button->check_button();
 	}
 }
 
-inline CarMode CarState::get_car_mode() const
+inline car_mode car_state::get_car_mode() const
 {
 	// Overtake mode trumps both idle mode and race mode
 	if (in_overtake_mode)
 	{
-		return CarMode::Overtake;
+		return car_mode::overtake;
 	}
 
 	// Race mode trumps idle mode but not overtake mode
 	if (in_race_mode)
 	{
-		return CarMode::Race;
+		return car_mode::race;
 	}
 
 	// Idle mode trumps no mode
-	return CarMode::Idle;
+	return car_mode::idle;
 }
 
-void CarState::next_tick()
+void car_state::next_tick(const unsigned long delta_time_ms)
 {
 	update_buttons();
 
-	CarMode mode = get_car_mode();
+	const car_mode mode = get_car_mode();
 
-	battery_level = analogRead(get_pin(Pins::Ammeter)) * analogRead(get_pin(Pins::Voltmeter));
-	battery_percentage = static_cast<float>(battery_level) / static_cast<float>(BATTERY_CAPACITY);
+	const float battery_energy = 0;
+	const float battery_current = static_cast<float>(analogRead(get_pin(pins::ammeter)));
+	const float battery_voltage = static_cast<float>(analogRead(get_pin(pins::voltmeter)));
+
+	battery_level = battery_current * battery_voltage * static_cast<float>(delta_time_ms);
+	battery_percentage = battery_level / BATTERY_CAPACITY;
 }
 
-void CarState::update_screen()
+void car_state::update_screen()
 {
 	update_buttons();
 
-	CarMode mode = get_car_mode();
+	car_mode mode = get_car_mode();
 
 	/* Display Settings. Measurements in pixels. */
 
@@ -68,7 +72,7 @@ void CarState::update_screen()
 	const int text_start_x = 2 * border_padding + border_thickness, text_start_y = text_start_x;
 
 	// Cache the display size in easy to use variable for convenience
-	const vector2<int> display_size = display.get_display_size();
+	const vec2<int> display_size = display.get_display_size();
 
 	/* Pretty Drawing of cars internal state :) */
 
