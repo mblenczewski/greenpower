@@ -1,0 +1,12 @@
+1 Miko = the current required to increase the output of the hall effect sensor by 1 arduino unit
+1 David = the voltage required to increase the output of the potential divider by 1 arduino unit
+
+1 RG = 1 Miko * 1 David * 1 Milisecond
+
+Capacity of the battery = ??? RGs
+
+1 Miko α 1 Andy
+
+1 Andy = Δ Current (Amps) outputted by the porter controller caused by the increase of 1 PWM input (0-255) to the porter contoller
+
+Calculation for desired Mikos to output = (Energy left (RGs) / (Time left (milliseconds) * Voltage Output (Davids))
