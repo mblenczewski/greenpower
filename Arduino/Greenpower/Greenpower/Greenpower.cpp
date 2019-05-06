@@ -2,11 +2,14 @@
 //
 //
 
-#include "Car.h"
 #include "Greenpower.h"
+#include "Car.h"
 
 // The elapsed time since the Arduino was powered on.
 unsigned long global_elapsed_time_ms = millis();
+
+// The display that we will be writing to.
+MCUFRIEND_kbv tft_display;
 
 // Represents the car.
 car_state car;
@@ -27,7 +30,8 @@ void setup_pin_modes()
 	pinMode(get_pin(pins::button_overtake_mode), INPUT);
 }
 
-int _loop() {
+int _loop()
+{
 	// The delta time (in milliseconds) between the last tick and the current one.
 	const unsigned long delta_time_ms = global_elapsed_time_ms - millis();
 
@@ -38,6 +42,7 @@ int _loop() {
 	// Update the global elapsed time (in milliseconds) for the next iteration.
 	global_elapsed_time_ms = millis();
 
+	Serial.println(F("Hello, World!"));
 	return 0;
 }
 
@@ -45,25 +50,26 @@ int main()
 {
 	// Initialises Arduino stuff, such as serial output and input.
 	init();
-	Serial.begin(9600);
+	Serial.begin(115200);
 
-	// Initialises car stuff, such as pin modes and the RF module.
+	// Initialises car stuff, such as the pin modes, the screen, and the RF module.
 	setup_pin_modes();
+	lcd_setup(&tft_display);
+
+	// Set the display to horizontal
+	tft_display.setRotation(1);
 
 	for (;;)
 	{
-		// The return code for the next loop iteration; main will break if it is not 0.
-		const int return_code = _loop();
+		// The return code for the next loop iteration; main() will break if it is not 0.
+		const int ret_code = _loop();
 
-		if (!return_code)
+		if (ret_code != 0)
 		{
-			//Serial.println(F("Loop completed successfuly."));
-			continue;
+			Serial.print(F("Non-zero error code returned: "));
+			Serial.println(ret_code, DEC);
+			break;
 		}
-
-		Serial.print(F("Loop failed with error code "));
-		Serial.println(return_code, DEC);
-		break;
 	}
 
 	Serial.flush();

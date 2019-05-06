@@ -51,6 +51,9 @@ constexpr auto LCD_CD = A2;
 // LCD Write goes to Analog pin 1.
 constexpr auto LCD_WR = A1;
 
+// LCD RS - identical to LCD_CD
+constexpr auto LCD_RS = LCD_CD;
+
 // LCD Read goes to Analog pin 0.
 constexpr auto LCD_RD = A0;
 
@@ -81,9 +84,9 @@ constexpr unsigned short int YELLOW = 0xFFE0;
 constexpr unsigned short int WHITE = 0xFFFF;
 
 // Gets the ID for our display's processing chip. Inlined for performance reasons.
-inline uint16_t get_lcd_id(MCUFRIEND_kbv lcd_screen)
+inline uint16_t get_lcd_id(MCUFRIEND_kbv* lcd_screen)
 {
-	return lcd_screen.readID();
+	return lcd_screen->readID();
 }
 
 // Represents a display that can be written to or drawn on.
@@ -91,17 +94,17 @@ class display
 {
 private:
 	// The display that we will be drawing to.
-	MCUFRIEND_kbv tft_display;
+	MCUFRIEND_kbv* tft_display = nullptr;
 
 	// The ID for our display's processing chip.
-	unsigned short int display_identifier;
+	unsigned short int display_identifier = 0x9486;
 
 	// Holds the size of the display (x = width, y = height).
-	vec2<int> display_size{ tft_display.width(), tft_display.height() };
+	vec2<int> display_size{ tft_display->width(), tft_display->height() };
 
 	// The default size for any text written to the screen. Rendered text size in pixels
 	// is calculated via the following equation: pixel_size = font_size * 10.
-	const unsigned short int TEXT_SIZE = 3;
+	const unsigned short int TEXT_SIZE = 2;
 
 	// The default background colour for the screen.
 	const unsigned short int BG_COLOUR = BLACK;
@@ -110,7 +113,6 @@ private:
 	const unsigned short int FG_COLOUR = WHITE;
 
 protected:
-
 	// Returns the number of pixels that the given string message will take up on the display
 	// at the given font size. Inlined for performance reasons.
 	static uint16_t string_size_in_pixels(const char* str, const int font_size)
@@ -121,16 +123,16 @@ protected:
 
 	// Called to move the display's cursor to the correct position on the screen, and set the
 	// appropriate colour for drawing text. Inlined for performance reasons.
-	void start_draw_text(const int x_pos, const int y_pos, const uint16_t text_colour, const int text_size)
+	void start_draw_text(const int x_pos, const int y_pos, const uint16_t text_colour, const int text_size) const
 	{
-		tft_display.setCursor(x_pos, y_pos);
-		tft_display.setTextSize(text_size);
-		tft_display.setTextColor(text_colour);
+		tft_display->setCursor(x_pos, y_pos);
+		tft_display->setTextSize(text_size);
+		tft_display->setTextColor(text_colour);
 	}
 
 public:
 	// Initialises a new instance of the Display class.
-	display();
+	explicit display(MCUFRIEND_kbv* lcd_display);
 
 	// Sets the display up ready for writing or drawing.
 	void setup_display();
@@ -236,6 +238,9 @@ public:
 	// Draws a pixel at the given (x, y) cursor position in the given 16-bit colour.
 	void draw_pixel(int x, int y, uint16_t colour);
 };
+
+// Sets up the MCUFRIEND_kvb lcd given, and returns the id in use by the lcd screen.
+uint16_t lcd_setup(MCUFRIEND_kbv* lcd_display);
 
 // Logs debug information about the given LCD screen to the serial connection.
 void lcd_debug(const display* lcd_display);

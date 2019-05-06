@@ -8,12 +8,7 @@
 #else
 #include "WProgram.h"
 #endif
-
-// Internal loop function, that will be repeated until the Arduino is reset.
-int _loop();
-
-// Main function that will be executed when the Arduino receives power.
-int main();
+#include <MCUFRIEND_kbv.h>
 
 // Represents a 2 dimensional vector.
 template <typename T>
@@ -84,5 +79,8 @@ inline uint8_t get_pin(pins pin_name)
 
 // Sets up the pin IO modes of all defined modules (see 'Pins' enum).
 void setup_pin_modes();
+
+// The display that we will be writing to.
+extern MCUFRIEND_kbv tft_display;
 
 #endif

@@ -13,7 +13,6 @@
 #include "ButtonFunctions.h"
 #include "Display.h"
 #include "Greenpower.h"
-#include "StateMachine.h"
 
 // Total amount of energy in the battery when fully charged (E=I*V*dt).
 constexpr int BATTERY_CAPACITY = 3400;
@@ -24,7 +23,8 @@ constexpr int THROTTLE_MIN = 0;
 // The maximum reading for the throttle controlling pin.
 constexpr  int THROTTLE_MAX = 1023;
 
-constexpr int SPEED_CONTROLLER_MAX = 255;
+// The maximum reading for the speed controller.
+constexpr int SPEED_CONTROLLER_MAX = 4000;
 
 // Stores the possible modes that the car can be in.
 enum class car_mode
@@ -43,8 +43,11 @@ enum class car_mode
 class car_state
 {
 private:
-	// The maximum value for the car's throttle.
+	// The maximum value for the car's throttle, when not in overtake mode.
 	const int THROTTLE_CAP = 255;
+
+	// The maximum value for the speed controller, when not in overtake mode.
+	const int SPEED_CONTROLLER_CAP = 255;
 
 	// The reccomended value for the car's throttle.
 	int reccomended_throttle = 30;
@@ -52,8 +55,8 @@ private:
 	// The current value for the car's throttle.
 	int throttle = reccomended_throttle;
 
-	// The distance travelled by the car so far.
-	int distance_travelled = 0;
+	// The current value for the speed controller.
+	int speed_controller = 0;
 
 	// The current amount of energy in the battery (E=I*V*dt). Initialised as the battery's capacity.
 	float battery_level = BATTERY_CAPACITY;
@@ -68,7 +71,7 @@ private:
 	bool in_overtake_mode = false;
 
 	// The display we will be writing to and drawing on to show the cars internal state.
-	display display;
+	display lcd_display{ &tft_display };
 
 	// Increments a given variable by 1 whenever the ButtonAdd1 pin (pin 23) is high.
 	button<int> increment_by1{ nullptr, pins::button_add1, &increment_variable_1, &null_func };
@@ -94,15 +97,9 @@ private:
 	// Array of all mode buttons that will be in use.
 	button<bool>* mode_buttons[2]{ &race_button, &overtake_button };
 
-	// States for the state machine.
-	state states[1] = { NULL_STATE };
-
-	// State machine for co-operative multitasking.
-	state_machine my_state_machine{ states };
-
 public:
 	// Initialises a new instance of the CarState class.
-	car_state();
+	car_state() = default;
 
 	// Updates all the buttons states.
 	void update_buttons() const;
