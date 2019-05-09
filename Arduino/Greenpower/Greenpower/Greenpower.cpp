@@ -4,6 +4,7 @@
 
 #include "Greenpower.h"
 #include "Car.h"
+#include "Synchronisation.h"
 
 // The elapsed time since the Arduino was powered on.
 unsigned long global_elapsed_time_ms = millis();
@@ -32,6 +33,7 @@ void setup_pin_modes()
 
 int _loop()
 {
+	sync::start_iteration();
 	// The delta time (in milliseconds) between the last tick and the current one.
 	const unsigned long delta_time_ms = global_elapsed_time_ms - millis();
 
@@ -43,6 +45,8 @@ int _loop()
 	global_elapsed_time_ms = millis();
 
 	Serial.println(F("Hello, World!"));
+
+	sync::end_iteration();
 	return 0;
 }
 
@@ -56,7 +60,8 @@ int main()
 	setup_pin_modes();
 	lcd_setup(&tft_display);
 
-	// Set the display to horizontal
+	// Set the display to horizontal, with the mega data cable at the top-left corner.
+	// In this orientation, the top-left corner of the screen is at (0, 0).
 	tft_display.setRotation(1);
 
 	for (;;)

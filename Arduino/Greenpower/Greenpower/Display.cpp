@@ -10,6 +10,9 @@ display::display(MCUFRIEND_kbv* lcd_display)
 {
 	tft_display = lcd_display;
 	//setup_display();
+
+	display_size.x = tft_display->width();
+	display_size.y = tft_display->height();
 }
 
 void display::setup_display()

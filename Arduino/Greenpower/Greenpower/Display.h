@@ -100,7 +100,7 @@ private:
 	unsigned short int display_identifier = 0x9486;
 
 	// Holds the size of the display (x = width, y = height).
-	vec2<int> display_size{ tft_display->width(), tft_display->height() };
+	vec2<int> display_size{ 0, 0 };
 
 	// The default size for any text written to the screen. Rendered text size in pixels
 	// is calculated via the following equation: pixel_size = font_size * 10.

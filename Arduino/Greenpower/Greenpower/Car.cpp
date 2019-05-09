@@ -73,22 +73,24 @@ void car_state::update_screen()
 	// Display Settings. Measurements in pixels.
 
 	// Border Settings.
-	const int border_thickness = 4, border_padding = 2, border_colour = GREEN;
+	const int border_padding = 2, border_thickness = border_padding * 2 + 1, border_colour = GREEN;
 
 	// Text Settings.
-	const int text_start_x = 2 * border_padding + border_thickness, text_start_y = text_start_x;
+	const int text_start_x = border_thickness, text_start_y = border_thickness;
 
 	// Cache the display size in easy to use variable for convenience
-	const vec2<int> display_size = lcd_display.get_display_size();
+	vec2<int> display_size = lcd_display.get_display_size();
+
+	// Double the display_size width to correct for screen error.
+	display_size.x *= 2;
 
 	// Pretty Drawing of cars internal state :)
 
 	// Draws a border with padding on all sides.
-	lcd_display.draw_hollow_rectangle(border_padding, border_padding,
-		display_size.x - 2 * border_padding, display_size.y - 2 * border_padding, border_colour);
+	lcd_display.draw_hollow_rectangle(border_padding, border_padding, display_size.x - 4, display_size.y - 4, border_colour);
 
 	char battery_length_str[26];
-	const float battery_level_normalised = battery_percentage * 100;
+	const float battery_level_normalised = battery_level * 100;
 
 	sprintf(battery_length_str, "Battery Level: %d.%.2d", static_cast<int>(battery_level_normalised), static_cast<int>(battery_level_normalised * 100));
 
