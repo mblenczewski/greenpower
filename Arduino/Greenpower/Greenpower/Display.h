@@ -104,13 +104,13 @@ private:
 
 	// The default size for any text written to the screen. Rendered text size in pixels
 	// is calculated via the following equation: pixel_size = font_size * 10.
-	const unsigned short int TEXT_SIZE = 2;
+	static const unsigned short int TEXT_SIZE = 2;
 
 	// The default background colour for the screen.
-	const unsigned short int BG_COLOUR = BLACK;
+	static const unsigned short int BG_COLOUR = BLACK;
 
 	// The default foreground colour for the screen.
-	const unsigned short int FG_COLOUR = WHITE;
+	static const unsigned short int FG_COLOUR = WHITE;
 
 protected:
 	// Returns the number of pixels that the given string message will take up on the display
@@ -147,6 +147,18 @@ public:
 	vec2<int> get_display_size() const
 	{
 		return display_size;
+	}
+
+	// Gets the width of a character with the given font size.
+	int get_font_width(const int font_size = TEXT_SIZE) const
+	{
+		return font_size * 10;
+	}
+
+	// Gets the height of a character with the given font size.
+	int get_font_height(const int font_size = TEXT_SIZE) const
+	{
+		return font_size * 10;
 	}
 
 	// Writes the given string message to the display, starting at the given (x, y) cursor position.

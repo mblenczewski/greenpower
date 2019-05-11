@@ -77,6 +77,7 @@ void car_state::update_screen()
 
 	// Text Settings.
 	const int text_start_x = border_thickness, text_start_y = border_thickness;
+	const int text_height = lcd_display.get_font_height(), text_width = lcd_display.get_font_width();
 
 	// Cache the display size in easy to use variable for convenience
 	vec2<int> display_size = lcd_display.get_display_size();
@@ -96,4 +97,26 @@ void car_state::update_screen()
 
 	// Writes the current batter percentage to the top of the screen.
 	lcd_display.write(battery_length_str, text_start_x, text_start_y);
+
+	char mode_str[26];
+	char* car_mode_str;
+
+	switch (mode) {
+	case car_mode::idle:
+		car_mode_str = "Idle";
+		break;
+	case car_mode::race:
+		car_mode_str = "Race";
+		break;
+	case car_mode::overtake:
+		car_mode_str = "Overtake";
+		break;
+	default:
+		car_mode_str = "Invalid Mode";
+		break;
+	}
+
+	sprintf(mode_str, "Mode: %s", car_mode_str);
+
+	lcd_display.write(mode_str, text_start_x, text_start_y + text_height);
 }
