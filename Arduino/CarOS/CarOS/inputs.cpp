@@ -76,6 +76,12 @@ analog_input::analog_input(const uint8_t monitored_input_pin) : input(monitored_
 	// can set maximum and minimum input values here
 }
 
+analog_input::analog_input(const uint8_t monitored_input_pin, const int minimum_value, const int maximum_value) : input(monitored_input_pin)
+{
+	this->minimum_value = minimum_value;
+	this->maximum_value = maximum_value;
+}
+
 int analog_input::read_pin()
 {
 	return cap_input(analogRead(monitored_pin), minimum_value, maximum_value);
@@ -88,7 +94,6 @@ float analog_input::percentage_input()
 
 digital_input::digital_input(const uint8_t monitored_input_pin) : input(monitored_input_pin)
 {
-	// can set maximum and minimum input values here
 	minimum_value = LOW;
 	maximum_value = HIGH;
 }

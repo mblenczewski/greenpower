@@ -3,10 +3,22 @@
 //
 
 #include "CarOS.h"
+#include "builtin_button_callbacks.h"
+#include "inputs.h"
+
+int counter = 0;
+button<int> incrementer{ A1, &counter, &increment_by_1_debug, &null_func };
+
+input* inputs[1] = { &incrementer };
 
 int loop_()
 {
-	return -1;
+	for (input* input_ : inputs)
+	{
+		input_->read_pin();
+	}
+
+	return 0;
 }
 
 int main()
@@ -31,5 +43,6 @@ int main()
 	}
 
 	Serial.println("Goodbye, World!");
+	Serial.flush();
 	return 0;
 }

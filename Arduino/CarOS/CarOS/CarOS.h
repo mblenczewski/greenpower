@@ -15,4 +15,13 @@ int loop_();
 // The main function, ran once during startup.
 int main();
 
+template<typename T>
+void increment_by_1_debug(T& ptr)
+{
+	Serial.print("Counter value incremented, was ");
+	Serial.print(ptr++);
+	Serial.print(" and is now ");
+	Serial.println(ptr);
+}
+
 #endif

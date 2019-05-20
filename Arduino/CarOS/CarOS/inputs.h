@@ -49,10 +49,10 @@ protected:
 	int maximum_value = 1023;
 
 	// Sets the minimum possible reading for an input to the given value.
-	void set_minimum_value(int value);
+	inline void set_minimum_value(int value);
 
 	// Sets the maximum possible reading for an input to the given value.
-	void set_maximum_value(int value);
+	inline void set_maximum_value(int value);
 
 	// Caps the given input between the given minimum and maximum values.
 	static inline int cap_input(int input, int min, int max);
@@ -65,10 +65,10 @@ public:
 	input& operator= (input&& other) noexcept;
 
 	// Returns the current minimum possible reading for an input.
-	int get_minimum_value() const;
+	inline int get_minimum_value() const;
 
 	// Returns the current maximum possible reading for an input.
-	int get_maximum_value() const;
+	inline int get_maximum_value() const;
 
 	// Reads the monitored input pin, caps the result between the minimum and maximum value
 	// and returns it.
@@ -81,12 +81,18 @@ public:
 };
 
 // Represents an analog input that reads a pin and returns the read value.
-class analog_input : protected input
+class analog_input : public input
 {
 public:
 	// Initialises a new instance of the analog_input class.
 	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
 	explicit analog_input(uint8_t monitored_input_pin);
+
+	// Initialises a new instance of the analog_input class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Also takes a minimum input value and a maximum input value, to which the actual input reading will be capped.
+	// This allows for 'dead-zones' in the input, giving a buffer between the actual maximum input and the read maximum input.
+	analog_input(uint8_t monitored_input_pin, int minimum_value, int maximum_value);
 
 	// Reads the monitored input pin, caps the result between the minimum and maximum value
 	// and returns it.
@@ -99,7 +105,7 @@ public:
 };
 
 // Represents a digital input that reads a pin and returns the read value.
-class digital_input : protected input
+class digital_input : public input
 {
 public:
 	// Initialises a new instance of the digital_input class.
@@ -119,7 +125,7 @@ public:
 // Represents a button, with debounce features. Takes a type for the target variable that the button should
 // edit.
 template<typename T>
-class button final : digital_input
+class button final : public digital_input
 {
 private:
 	// Defines a typename alias for a callback function.
@@ -155,17 +161,19 @@ private:
 	// Function to be invoked whenever the button state is checked, and the button is not pressed.
 	callback_func button_not_pressed_func = nullptr;
 
+	// Whether any pointers are set to nullptr.
+	bool pointers_null = true;
+
 public:
 	// Initialises a new instance of the button class.
 	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// No callback functions will be invoked when the button state changes.
 	explicit button(const uint8_t monitored_input_pin) : digital_input(monitored_input_pin)
 	{
 		debounce_delay_ms = DEBOUNCE_MS;
 		button_state = last_button_state = digitalRead(monitored_pin);
 		last_debounce_time_ms = millis();
 		state_change_count = 0;
-
-		// can set maximum and minimum input values here
 	}
 
 	// Initialises a new instance of the button class.
@@ -185,20 +193,22 @@ public:
 		button_pressed_func = button_pressed_callback;
 		button_not_pressed_func = button_not_pressed_callback;
 
-		// can set maximum and minimum input values here
+		pointers_null =
+			target_variable_ptr == nullptr ||
+			button_pressed_func == nullptr ||
+			button_not_pressed_func == nullptr;
 	}
 
 	// Initialises a new instance of the button class.
 	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
 	// Also takes the debounce delay in milliseconds to use.
+	// No callback functions will be invoked when the button state changes.
 	button(const uint8_t monitored_input_pin, const unsigned long debounce_delay_ms) : digital_input(monitored_input_pin)
 	{
 		this->debounce_delay_ms = debounce_delay_ms;
 		button_state = last_button_state = digitalRead(monitored_pin);
 		last_debounce_time_ms = millis();
 		state_change_count = 0;
-
-		// can set maximum and minimum input values here
 	}
 
 	// Initialises a new instance of the button class.
@@ -218,7 +228,10 @@ public:
 		button_pressed_func = button_pressed_callback;
 		button_not_pressed_func = button_not_pressed_callback;
 
-		// can set maximum and minimum input values here
+		pointers_null =
+			target_variable_ptr == nullptr ||
+			button_pressed_func == nullptr ||
+			button_not_pressed_func == nullptr;
 	}
 
 	// Reads the monitored input pin, caps the result between the minimum and maximum value
@@ -243,15 +256,20 @@ public:
 				button_state = reading;
 				waiting_for_debounce = false;
 
-				// button callback functions should only be invoked when the button changes state.
+				// button callback functions should only be invoked if not set to nullptr, and only when the button changes state.
+				// otherwise the callbacks should never be invoked, due to undefined behaviour. shame there is no null dereference operator
+				// such as in c#.
 
-				if (button_state == LOW)
+				if (!pointers_null)
 				{
-					button_not_pressed_func(*target_variable_ptr);
-				}
-				else if (button_state == HIGH)
-				{
-					button_pressed_func(*target_variable_ptr);
+					if (button_state == HIGH)
+					{
+						button_pressed_func(*target_variable_ptr);
+					}
+					else if (button_state == LOW)
+					{
+						button_not_pressed_func(*target_variable_ptr);
+					}
 				}
 			}
 		}

@@ -4,6 +4,7 @@
  Author:	mikol
 */
 
+#include "state_machine.h"
 #include "builtin_button_callbacks.h"
 #include "CarOS.h"
 #include "inputs.h"
