@@ -8,7 +8,8 @@
 
 int press_counter = 0;
 button<int> incrementer{ A1, &press_counter, &increment_by_1_debug, &null_func };
-pwm_input pwm_reader{ 21 };
+
+pwm_input pwm_reader{ 21, pwm_reader_debug, RISING }; // on an arduino mega, pin 21 has interrupt functionality
 
 input* inputs[] = { &incrementer, &pwm_reader };
 
@@ -19,9 +20,6 @@ int loop_()
 	{
 		input_->read_pin();
 	}
-
-	Serial.print("PWM pulse width: ");
-	Serial.println(pwm_reader.read_pin());
 
 	return 0;
 }
