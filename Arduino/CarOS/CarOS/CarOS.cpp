@@ -6,17 +6,22 @@
 #include "builtin_button_callbacks.h"
 #include "inputs.h"
 
-int counter = 0;
-button<int> incrementer{ A1, &counter, &increment_by_1_debug, &null_func };
+int press_counter = 0;
+button<int> incrementer{ A1, &press_counter, &increment_by_1_debug, &null_func };
+pwm_input pwm_reader{ 21 };
 
-input* inputs[1] = { &incrementer };
+input* inputs[] = { &incrementer, &pwm_reader };
 
 int loop_()
 {
+	// read inputs and update their state; buttons will invoke callback functions
 	for (input* input_ : inputs)
 	{
 		input_->read_pin();
 	}
+
+	Serial.print("PWM pulse width: ");
+	Serial.println(pwm_reader.read_pin());
 
 	return 0;
 }

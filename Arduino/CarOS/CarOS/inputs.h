@@ -9,6 +9,18 @@
 #include "WProgram.h"
 #endif
 
+#include <eRCaGuy_Timer2_Counter.h>
+
+// Global counter used to track elapsed time to within 1 microsecond.
+extern eRCaGuy_Timer2_Counter accurate_microsecond_timer;
+
+class pwm_input;
+
+// Holds the single pwm_input instance that can be acted upon by an interrupt service routine.
+extern pwm_input* pwm_input_instance;
+
+void default_isr();
+
 // Represents an input that reads a pin and returns the read value.
 class input
 {
@@ -78,6 +90,101 @@ public:
 	// and returns the percentage of the way to the maximum value that the reading is.
 	// Returns the percentage as a float between 0 and 1.
 	virtual float percentage_input() = 0;
+};
+
+// Represents an input capable of reading PWM (pulse width modulated) signals.
+class pwm_input final : public input
+{
+private:
+	// Defines a typename alias for an ISR.
+	using interrupt_service_routine = void(*)();
+
+	// The default interrupt service routine, used for counting the length of the pwm.
+	friend void default_isr();
+
+	// Sets up this pwm_input instance with the given parameters.
+	void setup_pwm(const uint8_t pin, const interrupt_service_routine isr, const uint8_t mode)
+	{
+		timer_start = last_interrupt_time = pulse_width = 0;
+		custom_isr = isr;
+		pwm_mode = mode;
+		attachInterrupt(digitalPinToInterrupt(pin), default_isr, pwm_mode);
+		pwm_input_instance = this;
+	}
+
+	// Sets up this pwm_input instance from the given instance reference.
+	void setup_pwm_from_other(pwm_input& other)
+	{
+		monitored_pin = other.monitored_pin;
+		minimum_value = other.minimum_value;
+		maximum_value = other.maximum_value;
+
+		timer_start = other.timer_start;
+		last_interrupt_time = other.last_interrupt_time;
+		pulse_width = other.pulse_width;
+		custom_isr = other.custom_isr;
+		pwm_mode = other.pwm_mode;
+
+		detachInterrupt(digitalPinToInterrupt(monitored_pin));
+		pwm_input_instance = this;
+		attachInterrupt(digitalPinToInterrupt(monitored_pin), default_isr, pwm_mode);
+	}
+
+	// The time at which the timer was started.
+	volatile unsigned long timer_start;
+
+	// The last time an interrupt was handled.
+	volatile unsigned long last_interrupt_time;
+
+	// The width of the pulse in microseconds.
+	volatile int pulse_width;
+
+	// A user defined interrupt service routine.
+	interrupt_service_routine custom_isr;
+
+	// The mode in which the PWM should work.
+	uint8_t pwm_mode;
+
+public:
+	// Initialises a new instance of the pwm_input class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	explicit pwm_input(uint8_t monitored_input_pin);
+
+	// Initialises a new instance of the pwm_input class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Also takes the PWM mode on which the ISR should be executed.
+	pwm_input(uint8_t monitored_input_pin, uint8_t pwm_mode);
+
+	// Initialises a new instance of the pwm_input class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Also takes a custom ISR, and the PWM mode on which the ISR should be executed.
+	pwm_input(uint8_t monitored_input_pin, interrupt_service_routine isr, uint8_t pwm_mode);
+
+	// Initialises a new instance of the pwm_input class via a copy constructor.
+	// Takes a reference to a previous pwm_input instance.
+	pwm_input(const pwm_input& other);
+
+	// Initialises a new instance of the pwm_input class via a move constructor.
+	// Takes a reference to a previous pwm_input instance.
+	pwm_input(pwm_input&& other) noexcept;
+
+	// Implementation of the copy assignment operator.
+	pwm_input& operator= (const pwm_input& other);
+
+	// Implementation of the move assignment operator.
+	pwm_input& operator= (pwm_input&& other) noexcept;
+
+	// Destroys an instance of the pwm_input class.
+	// Detaches the attached interrupt from the monitored pin.
+	~pwm_input() override;
+
+	// Returns the pulse width that was last read.
+	int read_pin() override;
+
+	// Reads the monitored input pin, caps the result between the minimum and maximum value
+	// and returns the percentage of the way to the maximum value that the reading is.
+	// Returns the percentage as a float between 0 and 1.
+	float percentage_input() override;
 };
 
 // Represents an analog input that reads a pin and returns the read value.
