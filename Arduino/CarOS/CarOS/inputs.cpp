@@ -131,7 +131,7 @@ pwm_input& pwm_input::operator=(pwm_input&& other) noexcept
 
 int pwm_input::read_pin()
 {
-	return pulse_width;
+	return static_cast<int>(pulse_width);
 }
 
 float pwm_input::percentage_input()
@@ -183,15 +183,15 @@ float digital_input::percentage_input()
 
 void default_isr()
 {
-  unsigned long t = micros(); //  accurate_microsecond_timer.get_count(); XXX not behaving
-  
-  if (pwm_input_instance == nullptr)
+	const unsigned long current_microseconds = micros(); //  accurate_microsecond_timer.get_count(); XXX not behaving
+
+	if (pwm_input_instance == nullptr)
 	{
 		return;
 	}
 
-  pwm_input_instance->pulse_width = t - pwm_input_instance->last_interrupt_time;
-	pwm_input_instance->last_interrupt_time = t;
+	pwm_input_instance->pulse_width = current_microseconds - pwm_input_instance->last_interrupt_time;
+	pwm_input_instance->last_interrupt_time = current_microseconds;
 
 	if (pwm_input_instance->custom_isr == nullptr)
 	{

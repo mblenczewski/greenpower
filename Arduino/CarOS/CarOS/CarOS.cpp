@@ -6,9 +6,6 @@
 #include "builtin_button_callbacks.h"
 #include "inputs.h"
 
-// Microseconds for event loop - currently 100Hz
-const long EVENT_TICK_MICROS = 10000L;
-
 // Records idle time during event loop in microseconds
 long idle_time = 0;
 
@@ -19,11 +16,8 @@ pwm_input pwm_reader{ 21, nullptr, RISING }; // on an arduino mega, pin 21 has i
 
 input* inputs[] = { &incrementer, &pwm_reader };
 
-int t = 0;
-
-long rpm_from_pwm(long pwm) {
-  return (60 * 1000000L) / pwm;
-}
+// Used to periodically print out the RPM, instead of every loop_() call.
+int loop_counter = 0;
 
 int loop_()
 {
@@ -33,15 +27,14 @@ int loop_()
 		input_->read_pin();
 	}
 
-  if((t % 20) == 0) {
-    Serial.print("RPM:");
-    Serial.print(rpm_from_pwm(pwm_reader.read_pwm()));
-    Serial.print(" Idle:");
-    Serial.print(idle_time);
-    Serial.println();
-  }
+	if (loop_counter++ % 20 == 0)
+	{
+		Serial.print("RPM: ");
+		Serial.print(rpm_from_pwm(pwm_reader.read_pwm()));
+		Serial.print(", Idle: ");
+		Serial.println(idle_time);
+	}
 
-  t++;
 	return 0;
 }
 
@@ -49,18 +42,18 @@ int main()
 {
 	init();
 
-  // Setup
+	// Setup
 	Serial.begin(115200);
 	Serial.println("Hello, World!");
 
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
+	pinMode(LED_BUILTIN, OUTPUT);
+	digitalWrite(LED_BUILTIN, LOW);
 
-  accurate_microsecond_timer.setup();
+	accurate_microsecond_timer.setup();
 
-  // Event loop 
-  unsigned long tick = micros();
-  
+	// Event loop
+	unsigned long tick = micros();
+
 	for (;;)
 	{
 		const int ret_code = loop_();
@@ -74,18 +67,17 @@ int main()
 #endif
 		}
 
-    // When should next loop run?
-    tick += EVENT_TICK_MICROS;
+		// When should next loop run?
+		tick += EVENT_TICK_MICROS;
 
-    // Record time left (or overrun if -ve)
-    idle_time = (long)(tick - micros());
+		// Record time left (or overrun if -ve)
+		idle_time = static_cast<long>(tick - micros());
 
-    // Wait until next loop (cast to signed to cope with wraparound)
-    //
-    // XXX If power becomes an issue, use a timer interrupt for event tick, and 'sleep' instruction here
-    //
-    while( (long)(micros() - tick) < 0)
-      ; 
+		// Wait until next loop (cast to signed to cope with wraparound)
+		//
+		// XXX If power becomes an issue, use a timer interrupt for event tick, and 'sleep' instruction here
+		//
+		while (static_cast<long>(micros() - tick) < 0);
 	}
 
 	Serial.println("Goodbye, World!");

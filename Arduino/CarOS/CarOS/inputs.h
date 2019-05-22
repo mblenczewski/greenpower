@@ -137,7 +137,7 @@ private:
 	volatile unsigned long last_interrupt_time;
 
 	// The width of the pulse in microseconds.
-	volatile long pulse_width;
+	volatile unsigned long pulse_width;
 
 	// A user defined interrupt service routine.
 	interrupt_service_routine custom_isr;
@@ -181,8 +181,9 @@ public:
 	// Returns the pulse width that was last read.
 	int read_pin() override;
 
-  long read_pwm() const { return pulse_width; }
-  
+	// Returns the lase pulse width.
+	unsigned long read_pwm() const { return pulse_width; }
+
 	// Reads the monitored input pin, caps the result between the minimum and maximum value
 	// and returns the percentage of the way to the maximum value that the reading is.
 	// Returns the percentage as a float between 0 and 1.

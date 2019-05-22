@@ -11,6 +11,17 @@
 
 #include "inputs.h"
 
+// The refresh rate for the main loop, in hertz.
+constexpr long REFRESH_RATE_HZ = 100;
+
+// The amount of microseconds per loop call.
+constexpr long REFRESH_RATE_MICROS = 100 * REFRESH_RATE_HZ;
+
+static_assert(REFRESH_RATE_MICROS == 10000L, "Refresh rate doesnt convert from Hz to microseconds properly.");
+
+// Microseconds for event loop - currently 100Hz
+constexpr long EVENT_TICK_MICROS = REFRESH_RATE_MICROS;
+
 // The behaviour to constantly run until the Arduino runs out of power.
 int loop_();
 
@@ -35,7 +46,13 @@ inline void pwm_reader_debug()
 		Serial.print(pwm_input_instance->read_pin());
 		Serial.println(" microseconds.");
 	}
-#endif 
+#endif
+}
+
+// Generates an RPM value from the passed PWM width (in microseconds).
+inline unsigned long rpm_from_pwm(const unsigned long pwm)
+{
+	return 1000000L * 60 / pwm;
 }
 
 #endif

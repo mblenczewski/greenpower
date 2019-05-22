@@ -21,6 +21,7 @@
 #define ARDUINO_AVR_MEGA2560
 #define ARDUINO_ARCH_AVR
 #define __cplusplus 201103L
+#define _Pragma(x)
 #define __AVR__
 #define __inline__
 #define __asm__(...)
