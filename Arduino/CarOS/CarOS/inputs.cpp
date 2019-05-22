@@ -183,22 +183,15 @@ float digital_input::percentage_input()
 
 void default_isr()
 {
-	if (pwm_input_instance == nullptr)
+  unsigned long t = micros(); //  accurate_microsecond_timer.get_count(); XXX not behaving
+  
+  if (pwm_input_instance == nullptr)
 	{
 		return;
 	}
 
-	pwm_input_instance->last_interrupt_time = accurate_microsecond_timer.get_count();
-
-	if (digitalRead(pwm_input_instance->monitored_pin) == HIGH)
-	{
-		if (pwm_input_instance->timer_start != 0)
-		{
-			pwm_input_instance->pulse_width = static_cast<volatile int>(accurate_microsecond_timer.get_count() - pwm_input_instance->timer_start);
-
-			pwm_input_instance->timer_start = 0;
-		}
-	}
+  pwm_input_instance->pulse_width = t - pwm_input_instance->last_interrupt_time;
+	pwm_input_instance->last_interrupt_time = t;
 
 	if (pwm_input_instance->custom_isr == nullptr)
 	{

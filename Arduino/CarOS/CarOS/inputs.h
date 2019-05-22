@@ -29,7 +29,7 @@ private:
 	void setup_instance(const uint8_t pin_to_monitor, const int minimum_value, const int maximum_value)
 	{
 		monitored_pin = pin_to_monitor;
-		pinMode(monitored_pin, INPUT);
+		pinMode(monitored_pin, INPUT_PULLUP);
 		this->minimum_value = minimum_value;
 		this->maximum_value = maximum_value;
 	}
@@ -137,7 +137,7 @@ private:
 	volatile unsigned long last_interrupt_time;
 
 	// The width of the pulse in microseconds.
-	volatile int pulse_width;
+	volatile long pulse_width;
 
 	// A user defined interrupt service routine.
 	interrupt_service_routine custom_isr;
@@ -181,6 +181,8 @@ public:
 	// Returns the pulse width that was last read.
 	int read_pin() override;
 
+  long read_pwm() const { return pulse_width; }
+  
 	// Reads the monitored input pin, caps the result between the minimum and maximum value
 	// and returns the percentage of the way to the maximum value that the reading is.
 	// Returns the percentage as a float between 0 and 1.
