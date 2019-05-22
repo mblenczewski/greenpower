@@ -28,12 +28,14 @@ void increment_by_1_debug(T& ptr)
 
 inline void pwm_reader_debug()
 {
+#if 0 // Eek - not good in an ISR
 	if (pwm_input_instance != nullptr)
 	{
 		Serial.print("PWM detected rising edge; pulse width: ");
 		Serial.print(pwm_input_instance->read_pin());
 		Serial.println(" microseconds.");
 	}
+#endif 
 }
 
 #endif
