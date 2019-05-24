@@ -9,7 +9,16 @@
 #include "WProgram.h"
 #endif
 
+#include <eRCaGuy_Timer2_Counter.h>
+
+#include "builtin_button_callbacks.h"
 #include "inputs.h"
+#include "miscellaneous.h"
+#include "models.h"
+#include "outputs.h"
+
+// Global counter used to track elapsed time to within 1 microsecond.
+extern eRCaGuy_Timer2_Counter accurate_microsecond_timer;
 
 // The refresh rate for the main loop, in hertz.
 constexpr long REFRESH_RATE_HZ = 100;

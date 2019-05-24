@@ -6,6 +6,9 @@
 #include "builtin_button_callbacks.h"
 #include "inputs.h"
 
+// Global counter used to track elapsed time to within 1 microsecond.
+eRCaGuy_Timer2_Counter accurate_microsecond_timer{};
+
 // Records idle time during event loop in microseconds
 long idle_time = 0;
 
@@ -16,12 +19,14 @@ pwm_input pwm_reader{ 21, nullptr, RISING }; // on an arduino mega, pin 21 has i
 
 input* inputs[] = { &incrementer, &pwm_reader };
 
+output* outputs[1] = {};
+
 // Used to periodically print out the RPM, instead of every loop_() call.
 int loop_counter = 0;
 
 int loop_()
 {
-	// read inputs and update their state; buttons will invoke callback functions
+	// read inputs and update their state; buttons will invoke callback functions when updated
 	for (input* input_ : inputs)
 	{
 		input_->read_pin();
@@ -33,6 +38,11 @@ int loop_()
 		Serial.print(rpm_from_pwm(pwm_reader.read_pwm()));
 		Serial.print(", Idle: ");
 		Serial.println(idle_time);
+	}
+
+	for (output* output_ : outputs)
+	{
+		output_->write_pin(0);
 	}
 
 	return 0;
@@ -63,6 +73,9 @@ int main()
 			Serial.print("Error, non-zero return code: ");
 			Serial.println(ret_code, DEC);
 #ifdef _DEBUG
+			// When running in release mode, as the code on the race day will be, we want to continue
+			// running the code regardless of any errors. In debug mode any error should cause a break
+			// in the program for debugging.
 			break;
 #endif
 		}
@@ -77,7 +90,9 @@ int main()
 		//
 		// XXX If power becomes an issue, use a timer interrupt for event tick, and 'sleep' instruction here
 		//
-		while (static_cast<long>(micros() - tick) < 0);
+		while (static_cast<long>(micros() - tick) < 0)
+		{
+		}
 	}
 
 	Serial.println("Goodbye, World!");

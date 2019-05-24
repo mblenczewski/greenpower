@@ -2,28 +2,29 @@
 //
 //
 
-#include <eRCaGuy_Timer2_Counter.h>
 #include "inputs.h"
-
-// Global counter used to track elapsed time to within 1 microsecond.
-eRCaGuy_Timer2_Counter accurate_microsecond_timer{};
 
 // Holds the single pwm_input instance that can be acted upon by an interrupt service routine.
 pwm_input* pwm_input_instance = nullptr;
 
 input::input(const uint8_t monitored_input_pin)
 {
-	setup_instance(monitored_input_pin, minimum_value, maximum_value);
+	setup_instance(monitored_input_pin, INPUT_PULLUP, minimum_value, maximum_value);
+}
+
+input::input(uint8_t monitored_input_pin, uint8_t pin_mode)
+{
+	setup_instance(monitored_input_pin, pin_mode, minimum_value, maximum_value);
 }
 
 input::input(const input& other)
 {
-	setup_instance(other.monitored_pin, other.minimum_value, other.maximum_value);
+	setup_instance(other.monitored_pin, other.pin_mode, other.minimum_value, other.maximum_value);
 }
 
 input::input(input&& other) noexcept
 {
-	setup_instance(other.monitored_pin, other.minimum_value, other.maximum_value);
+	setup_instance(other.monitored_pin, other.pin_mode, other.minimum_value, other.maximum_value);
 }
 
 input::~input()
@@ -52,7 +53,7 @@ input& input::operator=(const input& other)
 {
 	if (this != &other)
 	{
-		setup_instance(other.monitored_pin, other.minimum_value, other.maximum_value);
+		setup_instance(other.monitored_pin, other.pin_mode, other.minimum_value, other.maximum_value);
 	}
 
 	return *this;
@@ -62,7 +63,7 @@ input& input::operator=(input&& other) noexcept
 {
 	if (this != &other)
 	{
-		setup_instance(other.monitored_pin, other.minimum_value, other.maximum_value);
+		setup_instance(other.monitored_pin, other.pin_mode, other.minimum_value, other.maximum_value);
 	}
 
 	return *this;
@@ -89,12 +90,21 @@ pwm_input::pwm_input(const uint8_t monitored_input_pin) : input(monitored_input_
 	setup_pwm(monitored_input_pin, nullptr, RISING);
 }
 
-pwm_input::pwm_input(const uint8_t monitored_input_pin, const uint8_t pwm_mode) : input(monitored_input_pin)
+pwm_input::pwm_input(const uint8_t monitored_input_pin, const uint8_t pin_mode) : input(monitored_input_pin, pin_mode)
+{
+}
+
+pwm_input::pwm_input(const uint8_t monitored_input_pin, const uint8_t pin_mode, const uint8_t pwm_mode) : input(monitored_input_pin, pin_mode)
 {
 	setup_pwm(monitored_input_pin, nullptr, pwm_mode);
 }
 
 pwm_input::pwm_input(const uint8_t monitored_input_pin, const interrupt_service_routine isr, const uint8_t pwm_mode) : input(monitored_input_pin)
+{
+	setup_pwm(monitored_input_pin, isr, pwm_mode);
+}
+
+pwm_input::pwm_input(const uint8_t monitored_input_pin, const uint8_t pin_mode, const interrupt_service_routine isr, const uint8_t pwm_mode) : input(monitored_input_pin, pin_mode)
 {
 	setup_pwm(monitored_input_pin, isr, pwm_mode);
 }
@@ -144,6 +154,11 @@ analog_input::analog_input(const uint8_t monitored_input_pin) : input(monitored_
 	// can set maximum and minimum input values here
 }
 
+analog_input::analog_input(const uint8_t monitored_input_pin, const uint8_t pin_mode) : input(monitored_input_pin, pin_mode)
+{
+	// can set maximum and minimum input values here
+}
+
 analog_input::analog_input(const uint8_t monitored_input_pin, const int minimum_value, const int maximum_value) : input(monitored_input_pin)
 {
 	this->minimum_value = minimum_value;
@@ -161,6 +176,12 @@ float analog_input::percentage_input()
 }
 
 digital_input::digital_input(const uint8_t monitored_input_pin) : input(monitored_input_pin)
+{
+	minimum_value = LOW;
+	maximum_value = HIGH;
+}
+
+digital_input::digital_input(const uint8_t monitored_input_pin, const uint8_t pin_mode) : input(monitored_input_pin, pin_mode)
 {
 	minimum_value = LOW;
 	maximum_value = HIGH;

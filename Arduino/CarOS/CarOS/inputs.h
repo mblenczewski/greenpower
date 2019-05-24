@@ -9,10 +9,7 @@
 #include "WProgram.h"
 #endif
 
-#include <eRCaGuy_Timer2_Counter.h>
-
-// Global counter used to track elapsed time to within 1 microsecond.
-extern eRCaGuy_Timer2_Counter accurate_microsecond_timer;
+#include "CarOS.h"
 
 class pwm_input;
 
@@ -26,18 +23,22 @@ class input
 {
 private:
 	// Sets up this input instance with the given parameters.
-	void setup_instance(const uint8_t pin_to_monitor, const int minimum_value, const int maximum_value)
+	void setup_instance(const uint8_t pin_to_monitor, const uint8_t pin_mode, const int minimum_value, const int maximum_value)
 	{
 		monitored_pin = pin_to_monitor;
-		pinMode(monitored_pin, INPUT_PULLUP);
+		pinMode(monitored_pin, pin_mode);
 		this->minimum_value = minimum_value;
 		this->maximum_value = maximum_value;
 	}
 
 protected:
 	// Initialises a new instance of the input class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	explicit input(uint8_t monitored_input_pin);
+
+	// Initialises a new instance of the input class.
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	explicit input(uint8_t monitored_input_pin, uint8_t pin_mode);
 
 	// Initialises a new instance of the input class via a copy constructor.
 	// Takes a reference to a previous input instance.
@@ -53,6 +54,9 @@ protected:
 
 	// The pin that should be read as the input.
 	uint8_t monitored_pin = A0;
+
+	// The mode that the pin is in currently.
+	uint8_t pin_mode = INPUT_PULLUP;
 
 	// The minimum value that the read input should be capped to.
 	int minimum_value = 0;
@@ -147,18 +151,27 @@ private:
 
 public:
 	// Initialises a new instance of the pwm_input class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	explicit pwm_input(uint8_t monitored_input_pin);
 
 	// Initialises a new instance of the pwm_input class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
-	// Also takes the PWM mode on which the ISR should be executed.
-	pwm_input(uint8_t monitored_input_pin, uint8_t pwm_mode);
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	explicit pwm_input(uint8_t monitored_input_pin, uint8_t pin_mode);
 
 	// Initialises a new instance of the pwm_input class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	// Also takes the PWM mode on which the ISR should be executed.
+	pwm_input(uint8_t monitored_input_pin, uint8_t pin_mode, uint8_t pwm_mode);
+
+	// Initialises a new instance of the pwm_input class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	// Also takes a custom ISR, and the PWM mode on which the ISR should be executed.
 	pwm_input(uint8_t monitored_input_pin, interrupt_service_routine isr, uint8_t pwm_mode);
+
+	// Initialises a new instance of the pwm_input class.
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	// Also takes a custom ISR, and the PWM mode on which the ISR should be executed.
+	pwm_input(uint8_t monitored_input_pin, uint8_t pin_mode, interrupt_service_routine isr, uint8_t pwm_mode);
 
 	// Initialises a new instance of the pwm_input class via a copy constructor.
 	// Takes a reference to a previous pwm_input instance.
@@ -195,11 +208,15 @@ class analog_input : public input
 {
 public:
 	// Initialises a new instance of the analog_input class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	explicit analog_input(uint8_t monitored_input_pin);
 
 	// Initialises a new instance of the analog_input class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	explicit analog_input(uint8_t monitored_input_pin, uint8_t pin_mode);
+
+	// Initialises a new instance of the analog_input class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	// Also takes a minimum input value and a maximum input value, to which the actual input reading will be capped.
 	// This allows for 'dead-zones' in the input, giving a buffer between the actual maximum input and the read maximum input.
 	analog_input(uint8_t monitored_input_pin, int minimum_value, int maximum_value);
@@ -218,9 +235,13 @@ public:
 class digital_input : public input
 {
 public:
-	// Initialises a new instance of the digital_input class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Initialises a new instance of the input class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	explicit digital_input(uint8_t monitored_input_pin);
+
+	// Initialises a new instance of the input class.
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	explicit digital_input(uint8_t monitored_input_pin, uint8_t pin_mode);
 
 	// Reads the monitored input pin, caps the result between the minimum and maximum value
 	// and returns it.
@@ -276,7 +297,7 @@ private:
 
 public:
 	// Initialises a new instance of the button class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	// No callback functions will be invoked when the button state changes.
 	explicit button(const uint8_t monitored_input_pin) : digital_input(monitored_input_pin)
 	{
@@ -287,7 +308,18 @@ public:
 	}
 
 	// Initialises a new instance of the button class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	// No callback functions will be invoked when the button state changes.
+	explicit button(const uint8_t monitored_input_pin, const uint8_t pin_mode) : digital_input(monitored_input_pin, pin_mode)
+	{
+		debounce_delay_ms = DEBOUNCE_MS;
+		button_state = last_button_state = digitalRead(monitored_pin);
+		last_debounce_time_ms = millis();
+		state_change_count = 0;
+	}
+
+	// Initialises a new instance of the button class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	// Also takes callback function pointers for functions to invoke whenever the button state is checked, and the
 	// button is pressed and not pressed respectively, and a pointer to a variable that the callback functions
 	// should operate on.
@@ -310,7 +342,30 @@ public:
 	}
 
 	// Initialises a new instance of the button class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	// Also takes callback function pointers for functions to invoke whenever the button state is checked, and the
+	// button is pressed and not pressed respectively, and a pointer to a variable that the callback functions
+	// should operate on.
+	button(const uint8_t monitored_input_pin, const uint8_t pin_mode, T* target_variable_pointer, const callback_func button_pressed_callback,
+		const callback_func button_not_pressed_callback) : digital_input(monitored_input_pin, pin_mode)
+	{
+		debounce_delay_ms = DEBOUNCE_MS;
+		button_state = last_button_state = digitalRead(monitored_pin);
+		last_debounce_time_ms = millis();
+		state_change_count = 0;
+
+		target_variable_ptr = target_variable_pointer;
+		button_pressed_func = button_pressed_callback;
+		button_not_pressed_func = button_not_pressed_callback;
+
+		pointers_null =
+			target_variable_ptr == nullptr ||
+			button_pressed_func == nullptr ||
+			button_not_pressed_func == nullptr;
+	}
+
+	// Initialises a new instance of the button class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	// Also takes the debounce delay in milliseconds to use.
 	// No callback functions will be invoked when the button state changes.
 	button(const uint8_t monitored_input_pin, const unsigned long debounce_delay_ms) : digital_input(monitored_input_pin)
@@ -322,12 +377,47 @@ public:
 	}
 
 	// Initialises a new instance of the button class.
-	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT)).
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	// Also takes the debounce delay in milliseconds to use.
+	// No callback functions will be invoked when the button state changes.
+	button(const uint8_t monitored_input_pin, const uint8_t pin_mode, const unsigned long debounce_delay_ms) : digital_input(monitored_input_pin, pin_mode)
+	{
+		this->debounce_delay_ms = debounce_delay_ms;
+		button_state = last_button_state = digitalRead(monitored_pin);
+		last_debounce_time_ms = millis();
+		state_change_count = 0;
+	}
+
+	// Initialises a new instance of the button class.
+	// Takes a pin that should be monitored as an input, and sets it as an input (via pinMode(input_pin, INPUT_PULLUP)).
 	// Also takes the debounce delay in milliseconds to use, and callback function pointers for functions to invoke
 	// whenever the button state is checked, and the button is pressed and not pressed respectively, and a pointer to
 	// a variable that the callback functions should operate on.
 	button(const uint8_t monitored_input_pin, const unsigned long debounce_delay_ms, T* target_variable_pointer,
 		const callback_func button_pressed_callback, const callback_func button_not_pressed_callback) : digital_input(monitored_input_pin)
+	{
+		this->debounce_delay_ms = debounce_delay_ms;
+		button_state = last_button_state = digitalRead(monitored_pin);
+		last_debounce_time_ms = millis();
+		state_change_count = 0;
+
+		target_variable_ptr = target_variable_pointer;
+		button_pressed_func = button_pressed_callback;
+		button_not_pressed_func = button_not_pressed_callback;
+
+		pointers_null =
+			target_variable_ptr == nullptr ||
+			button_pressed_func == nullptr ||
+			button_not_pressed_func == nullptr;
+	}
+
+	// Initialises a new instance of the button class.
+	// Takes a pin that should be monitored as an input, and sets it to the given mode (via pinMode(input_pin, pin_mode)).
+	// Also takes the debounce delay in milliseconds to use, and callback function pointers for functions to invoke
+	// whenever the button state is checked, and the button is pressed and not pressed respectively, and a pointer to
+	// a variable that the callback functions should operate on.
+	button(const uint8_t monitored_input_pin, const uint8_t pin_mode, const unsigned long debounce_delay_ms, T* target_variable_pointer,
+		const callback_func button_pressed_callback, const callback_func button_not_pressed_callback) : digital_input(monitored_input_pin, pin_mode)
 	{
 		this->debounce_delay_ms = debounce_delay_ms;
 		button_state = last_button_state = digitalRead(monitored_pin);

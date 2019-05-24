@@ -33,6 +33,12 @@
     <ClInclude Include="builtin_button_callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="miscellaneous.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="models.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CarOS.cpp">
@@ -42,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="outputs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="miscellaneous.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="models.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
