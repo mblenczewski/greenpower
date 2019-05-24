@@ -43,11 +43,13 @@ int loop_()
 		input_->read_pin();
 	}
 
+	// update internal models
 	if (loop_counter++ % 20 == 0)
 	{
 		Serial << "RPM: " << rpm_from_pwm(pwm_reader.read_pwm()) << ", Idle time: " << idle_time << endl;
 	}
 
+	// handle all outputs
 	for (output* output_ : outputs)
 	{
 		output_->write_pin(0);

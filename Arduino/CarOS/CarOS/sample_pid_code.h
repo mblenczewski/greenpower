@@ -1,15 +1,13 @@
-// models.h
+// sample_pid_code.h
 
-#ifndef _MODELS_h
-#define _MODELS_h
+#ifndef _SAMPLE_PID_CODE_h
+#define _SAMPLE_PID_CODE_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
 #else
 #include "WProgram.h"
 #endif
-
-#include <PID_v1.h>
 
 #include "CarOS.h"
 

@@ -39,6 +39,9 @@
     <ClInclude Include="models.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sample_pid_code.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CarOS.cpp">
@@ -54,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="models.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sample_pid_code.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

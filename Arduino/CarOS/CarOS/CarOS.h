@@ -12,6 +12,7 @@
 #include <Adafruit_GFX.h>
 #include <eRCaGuy_Timer2_Counter.h>
 #include <MCUFRIEND_kbv.h>
+#include <PID_v1.h>
 #include <Streaming.h>
 
 #include "builtin_button_callbacks.h"

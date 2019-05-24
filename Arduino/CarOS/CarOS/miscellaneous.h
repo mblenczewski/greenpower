@@ -269,4 +269,41 @@ public:
 	friend void lcd_debug(Print& print_stream, const display& lcd_display);
 };
 
+// Holds options for a pid controller.
+// Reference: https://en.wikipedia.org/wiki/PID_controller
+struct pid_options
+{
+public:
+	// The target value for the pid controllers output, given input.
+	double pid_setpoint = 0.0;
+
+	// A reference to a double value holding the input (feedback) to the pid controller.
+	double& pid_input_ref;
+
+	// A reference to a double value holding the output from the pid controller.
+	double& pid_output_ref;
+
+	// Proportional gain - controls the sensitivity to deviations from the setpoint. The higher the
+	// proportional gain, the larger the change in the output for a given change in the error value;
+	// the pid controller will be more sensitive to any deviation from the setpoint.
+	double kp = 0.1;
+
+	// Integral gain - controls the accumulated error that should have been corrected previously. The larger
+	// the integral term the faster the movement towards the setpoint. However care must be taken since
+	// the integral term responds to previously accumulated error, it can overshoot the setpoint if the
+	// integral gain is too large.
+	double ki = 0.3;
+
+	// Derivative gain - controls settling time (damping) and system stability. The larger the derivative
+	// gain the longer it takes for the system to settle but the more stable it is (errors are damped more).
+	// The smaller the value the more sensitive the system is to changes.
+	double kd = 0.001;
+
+	/*
+	 * pid.SetMode(AUTOMATIC);
+	 * pid.SetSampleTime(20); // sample time is in milliseconds
+	 * pid.SetOutputLimits(0, 1000); // motor controller takes an input in this range
+	 */
+};
+
 #endif
