@@ -2,12 +2,23 @@
 //
 //
 
-#include "CarOS.h"
-#include "builtin_button_callbacks.h"
-#include "inputs.h"
+#include <Adafruit_GFX.h>
+#include <eRCaGuy_Timer2_Counter.h>
+#include <MCUFRIEND_kbv.h>
+#include <Streaming.h>
 
-// Global counter used to track elapsed time to within 1 microsecond.
+#include "builtin_button_callbacks.h"
+#include "CarOS.h"
+#include "inputs.h"
+#include "miscellaneous.h"
+#include "models.h"
+#include "outputs.h"
+
 eRCaGuy_Timer2_Counter accurate_microsecond_timer{};
+
+MCUFRIEND_kbv tft_display{};
+
+display car_display{ TFT_DISPLAY_PTR };
 
 // Records idle time during event loop in microseconds
 long idle_time = 0;
@@ -34,10 +45,7 @@ int loop_()
 
 	if (loop_counter++ % 20 == 0)
 	{
-		Serial.print("RPM: ");
-		Serial.print(rpm_from_pwm(pwm_reader.read_pwm()));
-		Serial.print(", Idle: ");
-		Serial.println(idle_time);
+		Serial << "RPM: " << rpm_from_pwm(pwm_reader.read_pwm()) << ", Idle time: " << idle_time;
 	}
 
 	for (output* output_ : outputs)
@@ -61,6 +69,10 @@ int main()
 
 	accurate_microsecond_timer.setup();
 
+#ifdef _DEBUG
+	lcd_debug(Serial, car_display);
+#endif
+
 	// Event loop
 	unsigned long tick = micros();
 
@@ -70,8 +82,7 @@ int main()
 
 		if (ret_code != 0)
 		{
-			Serial.print("Error, non-zero return code: ");
-			Serial.println(ret_code, DEC);
+			Serial << "Non zero error code returned by loop_(): " << ret_code;
 #ifdef _DEBUG
 			// When running in release mode, as the code on the race day will be, we want to continue
 			// running the code regardless of any errors. In debug mode any error should cause a break
