@@ -45,7 +45,7 @@ int loop_()
 
 	if (loop_counter++ % 20 == 0)
 	{
-		Serial << "RPM: " << rpm_from_pwm(pwm_reader.read_pwm()) << ", Idle time: " << idle_time;
+		Serial << "RPM: " << rpm_from_pwm(pwm_reader.read_pwm()) << ", Idle time: " << idle_time << endl;
 	}
 
 	for (output* output_ : outputs)
@@ -62,7 +62,7 @@ int main()
 
 	// Setup
 	Serial.begin(115200);
-	Serial.println("Hello, World!");
+	Serial << "Hello, World!" << endl;
 
 	pinMode(LED_BUILTIN, OUTPUT);
 	digitalWrite(LED_BUILTIN, LOW);
@@ -82,7 +82,7 @@ int main()
 
 		if (ret_code != 0)
 		{
-			Serial << "Non zero error code returned by loop_(): " << ret_code;
+			Serial << "Non zero error code returned by loop_(): " << ret_code << endl;
 #ifdef _DEBUG
 			// When running in release mode, as the code on the race day will be, we want to continue
 			// running the code regardless of any errors. In debug mode any error should cause a break
@@ -106,7 +106,7 @@ int main()
 		}
 	}
 
-	Serial.println("Goodbye, World!");
+	Serial << "Goodbye, World!" << endl;
 	Serial.flush();
 	return 0;
 }

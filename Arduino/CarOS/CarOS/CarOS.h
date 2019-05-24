@@ -48,7 +48,7 @@ int main();
 template<typename T>
 void increment_by_1_debug(T& ptr)
 {
-	Serial << "Counter value incremented. Was: " << ptr++ << ", Is: " << ptr;
+	Serial << "Counter value incremented. Was: " << ptr++ << ", Is: " << ptr << endl;
 }
 
 inline void pwm_reader_debug()
@@ -56,7 +56,7 @@ inline void pwm_reader_debug()
 #if 0 // Eek - not good in an ISR
 	if (pwm_input_instance != nullptr)
 	{
-		Serial << "PWM detected rising edge; pulse width: " << pwm_input_instance->read_pin() << " microseconds";
+		Serial << "PWM detected rising edge; pulse width: " << pwm_input_instance->read_pin() << " microseconds" << endl;
 	}
 #endif
 }

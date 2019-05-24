@@ -8,7 +8,6 @@
 #include "miscellaneous.h"
 
 uint16_t lcd_setup(MCUFRIEND_kbv* lcd_display);
-void lcd_debug(Print& print_stream, const display& lcd_display);
 
 display::display(MCUFRIEND_kbv* lcd_display)
 {
@@ -188,6 +187,8 @@ void lcd_debug(Print& print_stream, const display& lcd_display)
 		print_stream << F("should appear in the library header (Adafruit_TFT.h).") << endl;
 		print_stream << F("If using the breakout board, it should NOT be defined.") << endl;
 		print_stream << F("Also if using the breaktout, double-check that all wiring") << endl;
-		print_stream << F("matches the tutorial.") << endl;
+		print_stream << F("matches the tutorial.");
 	}
+
+	print_stream << endl;
 }
